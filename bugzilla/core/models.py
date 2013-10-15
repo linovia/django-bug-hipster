@@ -15,7 +15,7 @@ class ProfileManager(BaseUserManager):
 class Profile(models.Model):
     id = models.AutoField(primary_key=True, db_column='userid')
     login_name = models.CharField(max_length=255, db_index=True, unique=True)
-    password = models.CharField(max_length=128, null=True)
+    password = models.CharField(max_length=128, null=True, db_column='cryptpassword')
     realname = models.CharField(max_length=255, default='')
     disabledtext = models.TextField(default='')
     disabled_mail = models.SmallIntegerField(default=0, blank=True)
@@ -99,3 +99,9 @@ class Profile(models.Model):
 
     def has_perm(self, perm):
         return True
+
+
+from django.contrib.auth.signals import user_logged_in
+from django.contrib.auth.models import update_last_login
+
+user_logged_in.disconnect(update_last_login)
