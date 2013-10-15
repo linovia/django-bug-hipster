@@ -6,7 +6,7 @@ import re
 
 from django.contrib.auth import hashers
 from django.utils.encoding import force_bytes
-from django.utils.crypto import constant_time_compare
+from django.utils.crypto import constant_time_compare, get_random_string
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_noop as _
 from django.contrib.auth import forms as admin_forms
@@ -91,3 +91,9 @@ class BugzillaHasher(hashers.BasePasswordHasher):
             (_('salt'), hashers.mask_hash(salt, show=2)),
             (_('hash'), hashers.mask_hash(hashed)),
         ])
+
+    def salt(self):
+        """
+        Generates a cryptographically secure nonce salt in ascii
+        """
+        return get_random_string(8)
