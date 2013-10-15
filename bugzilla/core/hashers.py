@@ -9,6 +9,7 @@ from django.utils.encoding import force_bytes
 from django.utils.crypto import constant_time_compare
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_noop as _
+from django.contrib.auth import forms as admin_forms
 
 
 SALT_SIZE = 8
@@ -42,6 +43,7 @@ def identify_hasher(encoded):
                      "Did you specify it in the PASSWORD_HASHERS setting ?")
 
 hashers.identify_hasher = identify_hasher
+admin_forms.identify_hasher = identify_hasher
 
 
 class BugzillaHasher(hashers.BasePasswordHasher):

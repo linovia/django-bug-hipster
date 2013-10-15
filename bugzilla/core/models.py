@@ -6,6 +6,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth import hashers
 
+# Make sure to import the .hashers
+from . import hashers as local_hashers
+
 
 class ProfileManager(BaseUserManager):
     pass
