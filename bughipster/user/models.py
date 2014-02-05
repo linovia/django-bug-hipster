@@ -10,6 +10,23 @@ from django.contrib.auth import hashers
 from . import hashers as local_hashers
 
 
+@python_2_unicode_compatible
+class Group(models.Model):
+    id = models.AutoField(primary_key=True, db_column='id')
+    name = models.CharField(max_length=255, db_index=True)
+    description = models.TextField()
+    is_bug_group = models.SmallIntegerField(db_column='isbuggroup')
+    userregexp = models.CharField(max_length=255, default='')
+    active = models.SmallIntegerField(db_column='isactive', default=1)
+    icon_url = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        db_table = 'groups'
+
+    def __str__(self):
+        return self.name
+
+
 class ProfileManager(BaseUserManager):
     pass
 
@@ -21,12 +38,12 @@ class Profile(models.Model):
     password = models.CharField(max_length=128, null=True, db_column='cryptpassword')
     realname = models.CharField(max_length=255, default='')
     disabledtext = models.TextField(default='')
-    disabled_mail = models.SmallIntegerField(default=0, blank=True)
+    disable_mail = models.SmallIntegerField(default=0, blank=True)
     mybugslink = models.SmallIntegerField(default=1, blank=True)
     extern_id = models.CharField(max_length=64, null=True, blank=True,
         db_index=True, unique=True)
     is_enabled = models.SmallIntegerField(default=1, blank=True)
-    last_seen_date = models.DateTimeField(null=True, blank=True)
+    last_seen_date = models.DateTimeField(null=True, blank=True) # timestamp without timezone
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'login_name'
