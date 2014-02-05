@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block bugzilla-body %}
+
+<script type="text/javascript">
+    <!--
+    function onLoadActions() {
+      quicksearchHelpText('quicksearch_main', 'show');
+      if( window.external.AddSearchProvider ){
+        YAHOO.util.Dom.removeClass('quicksearch_plugin', 'bz_default_hidden');
+      }
+      document.getElementById('quicksearch_top').focus();
+    }
+    var quicksearch_message = "Enter a bug # or some search terms";
+
+    function checkQuicksearch( form ) {
+      if (form.quicksearch.value == '' || form.quicksearch.value == quicksearch_message ) { 
+        alert('Please enter one or more search terms first.');
+        return false; 
+      }
+      return true;         
+    }
+
+    function quicksearchHelpText(el_id, action){
+      var el = document.getElementById(el_id);
+      if ( action == "show") {
+        if( el.value == "" ) {
+          el.value = quicksearch_message
+          YAHOO.util.Dom.addClass(el, "quicksearch_help_text");
+        }
+      } else {
+        if( el.value == quicksearch_message ) {
+          el.value = "";
+          YAHOO.util.Dom.removeClass(el, "quicksearch_help_text");
+        }
+      }
+    }
+    YAHOO.util.Event.onDOMReady(onLoadActions);
+    //-->
+</script>
+
+
+<div id="page-index">
+  <table>
+    <tr>
+      <td>
+        <h1 id="welcome"> Welcome to Bugzilla</h1>
+        <div class="intro"></div>
+
+        <div class="bz_common_actions">
+          <ul>
+            <li>
+              <a id="enter_bug" href="enter_bug.cgi"><span>File a Bug</span></a>
+            </li>
+            <li>
+              <a id="query" href="query.cgi"><span>Search</span></a>
+            </li>
+            <li>
+              <a id="account"
+                   href="createaccount.cgi"><span>Open a New Account</span></a>
+            </li>
+          </ul>
+        </div>
+
+        <form id="quicksearchForm" name="quicksearchForm" action="buglist.cgi"
+              onsubmit="return checkQuicksearch(this);">
+          <div>
+            <input id="quicksearch_main" type="text" name="quicksearch"
+              title="Quick Search" 
+              onfocus="quicksearchHelpText(this.id, 'hide');"
+              onblur="quicksearchHelpText(this.id, 'show');"
+            >
+            <input id="find" type="submit" value="Quick Search">
+            <ul class="additional_links" id="quicksearch_links">
+              <li>
+                <a href="page.cgi?id=quicksearch.html">Quick Search help</a>
+              </li>
+              <li class="bz_default_hidden" id="quicksearch_plugin">
+                |
+                <a href="javascript:window.external.AddSearchProvider('search_plugin.cgi')">
+                 Install the Quick Search plugin
+                </a>
+              </li>
+            </ul>
+            <ul class="additional_links">
+              <li>
+                <a href="docs/en/html/using.html">Bugzilla User's Guide</a>
+              </li>
+              <li>
+                |
+                <a href="page.cgi?id=release-notes.html">Release Notes</a>
+              </li>
+            </ul>
+          </div>
+        </form>
+        <div class="outro"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+{% endblock bugzilla-body %}

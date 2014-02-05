@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block bugzilla-body %}
+<p>
+  To create a Bugzilla account, all you need to do is to enter
+  a legitimate email address.
+  You will receive an email at this address to confirm the creation of your
+  account. <b>You will not be able to log in until you receive the email.</b>
+  If it doesn't arrive within a reasonable amount of time, you may contact
+  the maintainer of this Bugzilla installation
+  at <a href="mailto:xordoquy@linovia.com">xordoquy@linovia.com</a>.
+</p>
+
+<p>
+  A user account is required to report new bugs or to comment into
+  existing ones, as you may be contacted for more information if needed.
+  This also lets other users clearly identify who is the author of comments
+  or changes made into bugs. <b>Note that your email address will
+  <u>never</u> be displayed to logged out users. Only registered users will be
+  able to see it.</b>
+</p>
+
+<p>
+  <b>PRIVACY NOTICE:</b> Bugzilla is an open bug
+  tracking system. Activity on most bugs, including email
+  addresses, will be visible to registered users. We <b>recommend</b> using a
+  secondary account or free web email service (such as Gmail, Yahoo,
+  Hotmail, or similar) to avoid receiving spam at your primary email address.
+</p>
+
+<form id="account_creation_form" method="get" action="">
+  <table>
+    <tbody><tr>
+      <td align="right">
+        <b>Email address:</b>
+      </td>
+      <td>
+        <input size="35" id="login" name="login">
+      </td>
+    </tr>
+  </tbody></table>
+  <br>
+  <input id="token" name="token" value="1391607555-8U6oQBkCw8epjA2ANApO6vQ5ldgbX0EtLNoP8AVVxas" type="hidden">
+  <input id="send" value="Send" type="submit">
+</form>
+{% endblock bugzilla-body %}
