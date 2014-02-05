@@ -9,10 +9,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-AUTH_USER_MODEL = 'core.Profile'
+AUTH_USER_MODEL = 'user.Profile'
 
 PASSWORD_HASHERS = (
-    'bughipster.core.hashers.BugzillaHasher',
+    'bughipster.user.hashers.BugzillaHasher',
 )
 
 DATABASES = {
@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
-    'bughipster.auth',
+    'bughipster.user',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
