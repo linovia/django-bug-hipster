@@ -10,6 +10,7 @@ see AUTHORS for more details.
 from django.views import generic
 
 from . import models
+from . import forms
 
 
 def bug_creation(request, *args, **kwargs):
@@ -21,6 +22,7 @@ def bug_creation(request, *args, **kwargs):
 class CreateBug(generic.CreateView):
     template_name = 'new_bug.html'
     model = models.Bug
+    form_class = forms.Bug
 
 
 class SelectProduct(generic.ListView):
