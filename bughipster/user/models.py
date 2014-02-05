@@ -38,7 +38,6 @@ class Profile(models.Model):
 
     class Meta:
         db_table = 'profiles'
-        app_label = 'user'
 
     def is_active(self):
         return bool(self.disabledtext)
