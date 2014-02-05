@@ -1,3 +1,4 @@
 Django==1.5.5
 psycopg2
 logan==0.5.9.1
+django-crispy-forms==1.4.0
