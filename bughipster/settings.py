@@ -128,6 +128,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'bughipster.user',
+    'bughipster.project',
+    'bughipster.website',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
