@@ -140,13 +140,13 @@ class Version(models.Model):
     id = models.AutoField(primary_key=True)
     value = models.CharField(max_length=64)
     product = models.ForeignKey('project.Product')
-    active = models.SmallIntegerField(default=1)
+    active = models.SmallIntegerField(default=1, db_column='isactive')
 
     class Meta:
         db_table = 'versions'
 
     def __str__(self):
-        return self.name
+        return self.value
 
 
 @python_2_unicode_compatible
@@ -161,7 +161,7 @@ class Milestone(models.Model):
         db_table = 'milestones'
 
     def __str__(self):
-        return self.name
+        return self.value
 
 
 @python_2_unicode_compatible
