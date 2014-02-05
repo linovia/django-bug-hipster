@@ -1,14 +1,12 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.contrib.auth.hashers import (
-    MAXIMUM_PASSWORD_LENGTH, UNUSABLE_PASSWORD, identify_hasher,
-)
-
 
 from .models import Profile
+
+MAXIMUM_PASSWORD_LENGTH = 64
 
 
 class UserCreationForm(forms.ModelForm):

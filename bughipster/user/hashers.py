@@ -65,7 +65,6 @@ class BugzillaHasher(hashers.BasePasswordHasher):
             return False
         return algorithm == self.algorithm
 
-    @hashers.password_max_length(hashers.MAXIMUM_PASSWORD_LENGTH)
     def encode(self, password, salt):
         assert password
         assert salt and len(salt) == SALT_SIZE
@@ -76,7 +75,6 @@ class BugzillaHasher(hashers.BasePasswordHasher):
             hashed = hashed[:-1]
         return '%s%s{%s}' % (salt, hashed, self.algorithm)
 
-    @hashers.password_max_length(hashers.MAXIMUM_PASSWORD_LENGTH)
     def verify(self, password, encoded):
         salt, hashed, algorithm = HASH_COMPILED_REGEXP.search(encoded).groups()
         assert algorithm == self.algorithm
