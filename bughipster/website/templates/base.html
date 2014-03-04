@@ -24,7 +24,7 @@
       <link href="{% static 'skins/standard/index.css' %}" rel="stylesheet" type="text/css" >
 
       <!--[if lte IE 7]>
-      <link href="skins/standard/IE-fixes.css" rel="stylesheet" type="text/css" >
+      <link href="{% static 'skins/standard/IE-fixes.css' %}" rel="stylesheet" type="text/css" >
       <![endif]-->
 
       <link href="{% static 'skins/contrib/Dusk/global.css' %}" rel="stylesheet" type="text/css" title="Dusk">
@@ -115,14 +115,14 @@
       </table>
 
       <ul class="links">
-        <li><a href="./">Home</a></li>
-        <li><span class="separator">| </span><a href="enter_bug.cgi">New</a></li>
-        <li><span class="separator">| </span><a href="describecomponents.cgi">Browse</a></li>
-        <li><span class="separator">| </span><a href="query.cgi">Search</a></li>
+        <li><a href="{% url 'front:home' %}">Home</a></li>
+        <li><span class="separator">| </span><a href="{% url 'front:create-bug' %}">New</a></li>
+        <li><span class="separator">| </span><a href="{% url 'front:view-component' %}">Browse</a></li>
+        <li><span class="separator">| </span><a href="{% url 'front:view-query' %}">Search</a></li>
 
         <li class="form">
           <span class="separator">| </span>
-          <form action="buglist.cgi" method="get"
+          <form action="{% url 'front:list-bug' %}" method="get"
               onsubmit="if (this.quicksearch.value == '')
                         { alert('Please enter one or more search terms first.');
                           return false; } return true;">
@@ -137,32 +137,32 @@
                  title="Quick Search" value="">
           <input class="btn" type="submit" value="Search" 
                  id="find_top"></form>
-          <a href="page.cgi?id=quicksearch.html" title="Quicksearch Help">[?]</a>
+          <a href="{% url 'front:flatpage' %}?id=quicksearch.html" title="Quicksearch Help">[?]</a>
         </li>
 
-        <li><span class="separator">| </span><a href="report.cgi">Reports</a></li>
+        <li><span class="separator">| </span><a href="{% url 'front:view-report' %}">Reports</a></li>
 
         <li></li>
 
         {% if user.is_authenticated %}
-          <li><span class="separator">| </span><a href="userprefs.cgi">Preferences</a></li>
-          <li><span class="separator">| </span><a href="admin.cgi">Administration</a></li>
+          <li><span class="separator">| </span><a href="{% url 'user:prefs' %}">Preferences</a></li>
+          <li><span class="separator">| </span><a href="{% url 'admin:index' %}">Administration</a></li>
 
           <li>
             <span class="separator">| </span>
-              <a href="index.cgi?logout=1">Log&nbsp;out</a>
-              xordoquy&#64;linovia.com
+              <a href="{% url 'user:logout' %}">Log&nbsp;out</a>
+              {{ user.login_name }}
           </li>
 
         {% else %}
           <li id="new_account_container_top">
             <span class="separator">| </span>
-            <a href="{% url 'create-account' %}">New&nbsp;Account</a>
+            <a href="{% url 'user:create-account' %}">New&nbsp;Account</a>
           </li>
 
           <li id="mini_login_container_top">
             <span class="separator">| </span>
-            <a id="login_link_top" href="index.cgi?GoAheadAndLogIn=1"
+            <a id="login_link_top" href="{% url 'user:login' %}"
                onclick="return show_mini_login_form('_top')">Log In</a>
 
             <form action="index.cgi" method="POST" 
@@ -210,7 +210,7 @@
           </li>
           <li id="forgot_container_top">
             <span class="separator">| </span>
-            <a id="forgot_link_top" href="index.cgi?GoAheadAndLogIn=1#forgot"
+            <a id="forgot_link_top" href="{% url 'user:forgot-password' %}"
                onclick="return show_forgot_form('_top')">Forgot Password</a>
             <form action="token.cgi" method="post" id="forgot_form_top"
                   class="mini_forgot bz_default_hidden">
@@ -263,10 +263,10 @@
       <ul id="useful-links">
         <li id="links-actions">
           <ul class="links">
-            <li><a href="./">Home</a></li>
-            <li><span class="separator">| </span><a href="enter_bug.cgi">New</a></li>
-            <li><span class="separator">| </span><a href="describecomponents.cgi">Browse</a></li>
-            <li><span class="separator">| </span><a href="query.cgi">Search</a></li>
+            <li><a href="{% url 'front:home' %}">Home</a></li>
+            <li><span class="separator">| </span><a href="{% url 'front:create-bug' %}">New</a></li>
+            <li><span class="separator">| </span><a href="{% url 'front:view-component' %}">Browse</a></li>
+            <li><span class="separator">| </span><a href="{% url 'front:view-query' %}">Search</a></li>
 
             <li class="form">
               <span class="separator">| </span>
@@ -285,32 +285,32 @@
                      title="Quick Search" value="">
               <input class="btn" type="submit" value="Search" 
                      id="find_bottom"></form>
-              <a href="page.cgi?id=quicksearch.html" title="Quicksearch Help">[?]</a>
+              <a href="{% url 'front:flatpage' %}?id=quicksearch.html" title="Quicksearch Help">[?]</a>
             </li>
 
-            <li><span class="separator">| </span><a href="report.cgi">Reports</a></li>
+            <li><span class="separator">| </span><a href="{% url 'front:view-report' %}">Reports</a></li>
 
             <li></li>
 
             {% if user.is_authenticated %}
-              <li><span class="separator">| </span><a href="userprefs.cgi">Preferences</a></li>
-              <li><span class="separator">| </span><a href="admin.cgi">Administration</a></li>
+              <li><span class="separator">| </span><a href="{% url 'user:prefs' %}">Preferences</a></li>
+              <li><span class="separator">| </span><a href="{% url 'admin:index' %}">Administration</a></li>
 
               <li>
                 <span class="separator">| </span>
-                  <a href="index.cgi?logout=1">Log&nbsp;out</a>
-                  xordoquy&#64;linovia.com
+                  <a href="{% url 'user:logout' %}">Log&nbsp;out</a>
+                  {{ user.login_name }}
               </li>
 
             {% else %}
               <li id="new_account_container_bottom">
                 <span class="separator">| </span>
-                <a href="{% url 'create-account' %}">New&nbsp;Account</a>
+                <a href="{% url 'user:create-account' %}">New&nbsp;Account</a>
               </li>
 
               <li id="mini_login_container_bottom">
                 <span class="separator">| </span>
-                <a id="login_link_bottom" href="index.cgi?GoAheadAndLogIn=1"
+                <a id="login_link_bottom" href="{% url 'user:login' %}"
                    onclick="return show_mini_login_form('_bottom')">Log In</a>
 
                 <form action="index.cgi" method="POST" 
@@ -358,7 +358,7 @@
               </li>
               <li id="forgot_container_bottom">
                 <span class="separator">| </span>
-                <a id="forgot_link_bottom" href="index.cgi?GoAheadAndLogIn=1#forgot"
+                <a id="forgot_link_bottom" href="{% url 'user:forgot-password' %}"
                    onclick="return show_forgot_form('_bottom')">Forgot Password</a>
                 <form action="token.cgi" method="post" id="forgot_form_bottom"
                       class="mini_forgot bz_default_hidden">
@@ -377,7 +377,7 @@
 
         <li id="links-saved">
           <ul class="links">
-            <li><a href="buglist.cgi?resolution=---&amp;emailassigned_to1=1&amp;emailreporter1=1&amp;emailtype1=exact&amp;email1=xordoquy%40linovia.com">My Bugs</a></li>
+            <li><a href="{% url 'front:list-bug' %}?resolution=---&amp;emailassigned_to1=1&amp;emailreporter1=1&amp;emailtype1=exact&amp;email1={{ user.login_name }}">My Bugs</a></li>
           </ul>
         </li>
 

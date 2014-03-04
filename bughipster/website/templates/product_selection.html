@@ -9,7 +9,7 @@
     {% for project in object_list %}
     <tr>
       <th align="right" valign="top">
-        <a href="{% url 'create-bug' %}?product={{ project.name }}">{{ project.name }}</a>:&nbsp;
+        <a href="{% url 'front:create-bug' %}?product={{ project.name }}">{{ project.name }}</a>:&nbsp;
       </th>
       <td valign="top">{{ project.description }}</td>
     </tr>

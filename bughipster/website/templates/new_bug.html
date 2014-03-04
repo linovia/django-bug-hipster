@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block css %}
 <link type="text/css" rel="stylesheet" href="{% static 'js/yui/assets/skins/sam/autocomplete.css' %}"></link>
@@ -194,16 +195,16 @@ TUI_hide_default('attachment_text_field');
   <input type="hidden" name="product" value="TestProduct">
   <input type="hidden" name="token" value="mKUnDUsqwP">
 
-  {{ form.as_p }}
+  {% crispy form %}
 
   <table>
     <tbody>
       <tr>
         <td colspan="4">
           Before reporting a bug, please read the 
-          <a href="page.cgi?id=bug-writing.html">bug writing guidelines</a>, please look at the list of
-          <a href="duplicates.cgi">most frequently reported bugs</a>, and please
-          <a href="query.cgi">search</a> for the bug.
+          <a href="{% url 'front:flatpage' %}?id=bug-writing.html">bug writing guidelines</a>, please look at the list of
+          <a href="{% url 'front:duplicates' %}">most frequently reported bugs</a>, and please
+          <a href="{% url 'front:view-query' %}">search</a> for the bug.
         </td>
       </tr>
 
@@ -229,13 +230,13 @@ TUI_hide_default('attachment_text_field');
           <a 
             title="Bugs are categorised into Products and Components."
             class="field_help_link"
-            href="page.cgi?id=fields.html#product">Product:</a>
+            href="{% url 'front:flatpage' %}?id=fields.html#product">Product:</a>
         </th>
         <td class="field_value" id="field_container_product" >TestProduct</td>
         <th class="field_label" id="field_label_reporter">
           <a title="The person who filed this bug."
              class="field_help_link"
-             href="page.cgi?id=fields.html#reporter">Reporter:</a>
+             href="{% url 'front:flatpage' %}?id=fields.html#reporter">Reporter:</a>
         </th>
         <td class="field_value "
             id="field_container_reporter" >xordoquy&#64;linovia.com</td>
@@ -247,7 +248,7 @@ TUI_hide_default('attachment_text_field');
               <a 
                 title="Components are second-level categories; each belongs to a particular Product. Select a Product to narrow down this list."
                 class="field_help_link"
-                href="describecomponents.cgi?product=TestProduct">Component:</a>
+                href="{% url 'front:view-component' %}?product=TestProduct">Component:</a>
             </label>
           </th>
           <td id="field_container_component">
@@ -285,7 +286,7 @@ TUI_hide_default('attachment_text_field');
               <a 
                   title="The version field defines the version of the software the bug was found in."
                   class="field_help_link"
-                  href="page.cgi?id=fields.html#version">Version:</a>
+                  href="{% url 'front:flatpage' %}?id=fields.html#version">Version:</a>
             </label>
           </th>
           <td rowspan="3">
@@ -298,7 +299,7 @@ TUI_hide_default('attachment_text_field');
             <label for="bug_severity">
             <a title="How severe the bug is, or whether it's an enhancement."
                class="field_help_link"
-               href="page.cgi?id=fields.html#bug_severity">Severity:</a>
+               href="{% url 'front:flatpage' %}?id=fields.html#bug_severity">Severity:</a>
             </label>
           </th>
           <td class="field_value" id="field_container_bug_severity">
@@ -327,7 +328,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The hardware platform the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;."
       class="field_help_link"
-      href="page.cgi?id=fields.html#rep_platform"
+      href="{% url 'front:flatpage' %}?id=fields.html#rep_platform"
   >Hardware:</a>
 </label>
 </th>
@@ -370,7 +371,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The operating system the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;."
       class="field_help_link"
-      href="page.cgi?id=fields.html#op_sys"
+      href="{% url 'front:flatpage' %}?id=fields.html#op_sys"
   >OS:</a>
 </label>
 </th>
@@ -428,7 +429,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="Engineers prioritize their bugs using this field."
       class="field_help_link"
-      href="page.cgi?id=fields.html#priority"
+      href="{% url 'front:flatpage' %}?id=fields.html#priority"
   >Priority:</a>
 </label>
 </th>
@@ -483,7 +484,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="A bug may be in any of a number of states."
       class="field_help_link"
-      href="page.cgi?id=fields.html#bug_status"
+      href="{% url 'front:flatpage' %}?id=fields.html#bug_status"
   >Status:</a>
 </label>
 </th>
@@ -529,7 +530,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The person in charge of resolving the bug."
       class="field_help_link"
-      href="page.cgi?id=fields.html#assigned_to"
+      href="{% url 'front:flatpage' %}?id=fields.html#assigned_to"
   >Assignee:</a>
 </label>
 </th>
@@ -560,7 +561,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="Users who may not have a direct role to play on this bug, but who are interested in its progress."
       class="field_help_link"
-      href="page.cgi?id=fields.html#cc"
+      href="{% url 'front:flatpage' %}?id=fields.html#cc"
   >CC:</a>
 </label>
 </th>
@@ -601,7 +602,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The amount of time that has been estimated it will take to resolve this bug."
       class="field_help_link"
-      href="page.cgi?id=fields.html#estimated_time"
+      href="{% url 'front:flatpage' %}?id=fields.html#estimated_time"
   >Orig. Est.:</a>
 </label>
 </th>
@@ -617,7 +618,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The date that this bug must be resolved by, entered in YYYY-MM-DD format."
       class="field_help_link"
-      href="page.cgi?id=fields.html#deadline"
+      href="{% url 'front:flatpage' %}?id=fields.html#deadline"
   >Deadline:</a>
 </label>
 </th>
@@ -653,7 +654,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="A short, unique name assigned to a bug in order to assist with looking it up and referring to it in other places in Bugzilla."
       class="field_help_link"
-      href="page.cgi?id=fields.html#alias"
+      href="{% url 'front:flatpage' %}?id=fields.html#alias"
   >Alias:</a>
 </label>
 </th>
@@ -670,7 +671,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="Bugs can have a URL associated with them - for example, a pointer to a web site where the problem is seen."
       class="field_help_link"
-      href="page.cgi?id=fields.html#bug_file_loc"
+      href="{% url 'front:flatpage' %}?id=fields.html#bug_file_loc"
   >URL:</a>
 </label>
 </th>
@@ -695,7 +696,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The bug summary is a short sentence which succinctly describes what the bug is about."
       class="field_help_link"
-      href="page.cgi?id=fields.html#short_desc"
+      href="{% url 'front:flatpage' %}?id=fields.html#short_desc"
   >Summary:</a>
 </label>
 </th>
@@ -854,7 +855,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="The bugs listed here must be resolved before this bug can be resolved."
       class="field_help_link"
-      href="page.cgi?id=fields.html#dependson"
+      href="{% url 'front:flatpage' %}?id=fields.html#dependson"
   >Depends on:</a>
 </label>
 </th>
@@ -870,7 +871,7 @@ TUI_hide_default('attachment_text_field');
   <a 
       title="This bug must be resolved before the bugs listed in this field can be resolved."
       class="field_help_link"
-      href="page.cgi?id=fields.html#blocked"
+      href="{% url 'front:flatpage' %}?id=fields.html#blocked"
   >Blocks:</a>
 </label>
 </th>
