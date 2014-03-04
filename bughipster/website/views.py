@@ -12,6 +12,10 @@ from django.views import generic
 from django.core.urlresolvers import reverse
 
 
+class ToDo(generic.TemplateView):
+    template_name = 'todo.html'
+
+
 class Home(generic.TemplateView):
     template_name = 'home.html'
 
