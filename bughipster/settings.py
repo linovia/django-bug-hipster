@@ -127,9 +127,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    # Project's applications
     'bughipster.user',
     'bughipster.project',
     'bughipster.website',
+
+    # 3rd party applications
+    'crispy_forms',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -162,3 +166,5 @@ LOGGING = {
         },
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
