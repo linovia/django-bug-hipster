@@ -9,7 +9,7 @@ see AUTHORS for more details.
 
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 from . import models
 
 
@@ -35,6 +35,25 @@ class Bug(forms.ModelForm):
         # Limit the available versions to the project's
         qs = self.fields['version'].queryset
         self.fields['version'].queryset = qs.filter(product_id=self.product_id)
+        self.configure_helper()
 
+    def configure_helper(self):
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.layout = Layout(
+            Field('component', size=7, aria_required='true', onchange='set_assign_to();', css_class='required'),
+            Fieldset(
+                'tada',
+                'version',
+                'severity',
+                'os',
+                'priority',
+                'status',
+                'assignee',
+                'cc',
+                'deadline',
+                'alias',
+            ),
+            ButtonHolder(
+                Submit('submit', 'Submit', css_class='button white')
+            )
+        )
