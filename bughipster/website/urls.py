@@ -12,12 +12,37 @@ from . import views
 from bughipster.project import views as project_views
 
 
-urlpatterns = patterns('',
+front_urls = patterns('',
     url(r'^$', views.Home.as_view(), name='home'),
     url(r'^index\.cgi$', views.Home.as_view(), name='home'),
-    url(r'^createaccount\.cgi$', views.CreateAccount.as_view(), name='create-account'),
     url(r'^enter_bug\.cgi$', project_views.bug_creation, name='create-bug'),
 
     # TODO:
+    url(r'^buglist\.cgi$', views.ToDo.as_view(), name='list-bug'),
+    url(r'^describecomponents\.cgi$', views.ToDo.as_view(), name='view-component'),
+    url(r'^duplicates\.cgi$', views.ToDo.as_view(), name='duplicates'),
+    url(r'^page\.cgi$', views.ToDo.as_view(), name='flatpage'),
+    url(r'^query\.cgi$', views.ToDo.as_view(), name='view-query'),
+    url(r'^report\.cgi$', views.ToDo.as_view(), name='view-report'),
+    url(r'^search_plugin\.cgi$', views.ToDo.as_view(), name='search-plugin'),
+)
+
+admin_urls = patterns('',
+    url(r'^admin\.cgi$', views.ToDo.as_view(), name='index'),
+)
+
+user_urls = patterns('',
+    url(r'^createaccount\.cgi$', views.CreateAccount.as_view(), name='create-account'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+
+    # TODO:
+    url(r'^userprefs\.cgi$', views.ToDo.as_view(), name='prefs'),
+    url(r'^forgot_password/$', views.ToDo.as_view(), name='forgot-password'),
+)
+
+urlpatterns = patterns('',
+    url(r'', include(front_urls, namespace='front')),
+    url(r'', include(user_urls, namespace='user')),
+    url(r'', include(admin_urls, namespace='back')),
 )
