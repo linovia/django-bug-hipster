@@ -16,6 +16,7 @@ home.html
 new_bug.html
 ------------
 - don't hardcode the product for view-component url
+- Remove hardcoded TestProduct
 
 
 create_account.html
@@ -34,3 +35,8 @@ index
 view-component
 --------------
 - describecomponents.cgi?product=TestProduct
+
+
+create_account
+--------------
+- write the form
