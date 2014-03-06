@@ -15,6 +15,8 @@ from . import models
 
 class Bug(forms.ModelForm):
     version = forms.ModelChoiceField(queryset=models.Version.objects, empty_label=None)
+    component = forms.ModelChoiceField(queryset=models.Component.objects, empty_label=None)
+
     class Meta:
         model = models.Bug
         fields = (
