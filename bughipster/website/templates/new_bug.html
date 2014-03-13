@@ -100,19 +100,23 @@ BUGZILLA.value_descs = {bug_status: {
 <script type="text/javascript">
 <!--
 
-var initialowners = new Array(1);
+{% with product.components.count as qt %}
+var initialowners = new Array({{qt}});
 var last_initialowner;
-var initialccs = new Array(1);
-var components = new Array(1);
-var comp_desc = new Array(1);
-var flags = new Array(1);
-    components[0] = "TestComponent";
-    comp_desc[0] = "This is a test component in the test product database. This ought to be blown away and replaced with real stuff in a finished installation of Bugzilla.";
-    initialowners[0] = "xordoquy\x40linovia.com";
-    flags[0] = [];
+var initialccs = new Array({{qt}});
+var components = new Array({{qt}});
+var comp_desc = new Array({{qt}});
+var flags = new Array({{qt}});
+{% endwith %}
+
+{% for component in product.component %}
+    components[{{loop.counter}}] = "{{ component.name }}";
+    comp_desc[{{loop.counter}}] = "{{ component.description }}";
+    initialowners[{{loop.counter}}] = "xordoquy\x40linovia.com";
+    flags[{{loop.counter}}] = [];
 
     initialccs[0] = "";
-
+{% endfor %}
 
 function set_assign_to() {
     // Based on the selected component, fill the "Assign To:" field
