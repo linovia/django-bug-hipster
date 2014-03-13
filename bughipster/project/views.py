@@ -28,6 +28,11 @@ class ProjectRestrictedMixin(object):
             handler = self.http_method_not_allowed
         return handler(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        data = super(ProjectRestrictedMixin, self).get_context_data(**kwargs)
+        data['product'] = self.product
+        return data
+
 
 class CreateBug(ProjectRestrictedMixin, generic.CreateView):
     template_name = 'new_bug.html'
