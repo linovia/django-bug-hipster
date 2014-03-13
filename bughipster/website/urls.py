@@ -16,13 +16,13 @@ front_urls = patterns('',
     url(r'^$', views.Home.as_view(), name='home'),
     url(r'^index\.cgi$', views.Home.as_view(), name='home'),
     url(r'^enter_bug\.cgi$', project_views.bug_creation, name='create-bug'),
+    url(r'^query\.cgi$', views.Query.as_view(), name='view-query'),
 
     # TODO:
     url(r'^buglist\.cgi$', views.ToDo.as_view(), name='list-bug'),
     url(r'^describecomponents\.cgi$', views.ToDo.as_view(), name='view-component'),
     url(r'^duplicates\.cgi$', views.ToDo.as_view(), name='duplicates'),
     url(r'^page\.cgi$', views.ToDo.as_view(), name='flatpage'),
-    url(r'^query\.cgi$', views.ToDo.as_view(), name='view-query'),
     url(r'^report\.cgi$', views.ToDo.as_view(), name='view-report'),
     url(r'^search_plugin\.cgi$', views.ToDo.as_view(), name='search-plugin'),
 )

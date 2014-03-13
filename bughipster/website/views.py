@@ -33,3 +33,7 @@ class UnconfiguredHome(generic.TemplateView):
 
 class CreateAccount(generic.TemplateView):
     template_name = 'create_account.html'
+
+
+class Query(generic.TemplateView):
+    template_name = 'search.html'
