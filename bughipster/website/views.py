@@ -16,6 +16,16 @@ class ToDo(generic.TemplateView):
     template_name = 'todo.html'
 
 
+class Error(generic.TemplateView):
+    template_name = 'error.html'
+    message = None
+
+    def get_context_data(self, **kwargs):
+        result = super(Error, self).get_context_data(**kwargs)
+        result['message'] = self.message
+        return result
+
+
 class Home(generic.TemplateView):
     template_name = 'home.html'
 
