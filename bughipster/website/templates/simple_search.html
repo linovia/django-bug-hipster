@@ -1,0 +1,64 @@
+{% extends  'base.html' %}
+
+
+{% block bugzilla-body %}
+<div class="tabbed">
+  <table class="tabs" border="0" cellpadding="10" cellspacing="0" width="100%">
+    <tbody>
+      <tr>
+        <td class="spacer">&nbsp;</td>
+        <td id="tab_specific" class="selected">Simple Search</td>
+        <td id="tab_advanced" class="clickable_area" onclick="document.location='query.cgi?format=advanced'">
+          <a href="query.cgi?format=advanced">Advanced Search</a>
+        </td>
+        <td class="spacer">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tabbody">
+    <p>
+    Find a specific bug by entering words that describe it.  Bugzilla will
+    search bug descriptions and comments for those words and return a list
+    of matching bugs sorted by relevance.
+    </p>
+
+    <p>
+    For example, if the bug you are looking for is a browser crash when you go
+    to a secure web site with an embedded Flash animation, you might search
+    for "crash secure SSL flash".
+    </p>
+
+    <form name="queryform" method="get" action="{% url 'front:list-bug' %}">
+      <input name="query_format" value="specific" type="hidden">
+      <input name="order" value="relevance desc" type="hidden">
+      <input id="no_redirect" name="no_redirect" value="1" type="hidden">
+      <script type="text/javascript">
+        if (history && history.replaceState) {
+          var no_redirect = document.getElementById("no_redirect");
+          no_redirect.value = 1;
+        }
+      </script>
+
+      <table summary="Search fields" class="bz_simple_search_form">
+        <tbody>
+          {{ form.as_table }}
+          <tr>
+            <td></td>
+            <td>
+                <input id="search" value="Search" type="submit">
+            </td>
+          </tr>
+          <script type="text/javascript"> <!--
+              document.forms['queryform'].id_words.focus(); 
+          // -->
+          </script>
+        </tbody>
+      </table>
+      </form>
+
+
+  </div>
+
+</div>
+{% endblock bugzilla-body %}

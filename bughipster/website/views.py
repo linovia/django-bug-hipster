@@ -11,6 +11,9 @@ from django import http
 from django.views import generic
 from django.core.urlresolvers import reverse
 
+from . import filters
+from bughipster.project import models
+
 
 class ToDo(generic.TemplateView):
     template_name = 'todo.html'
@@ -45,5 +48,28 @@ class CreateAccount(generic.TemplateView):
     template_name = 'create_account.html'
 
 
-class Query(generic.TemplateView):
-    template_name = 'search.html'
+class SimpleQuery(generic.TemplateView):
+    template_name = 'simple_search.html'
+
+    def get_context_data(self, **kwargs):
+        result = super(SimpleQuery, self).get_context_data(**kwargs)
+        # f = ProductFilter(request.GET, queryset=Product.objects.all())
+        result['form'] = filters.SimpleQuery({}, queryset=models.Bug.objects.all()).form
+        return result
+
+
+class ComplexQuery(generic.TemplateView):
+    template_name = 'complex_search.html'
+
+
+def query(request, *args, **kwargs):
+    view_type = request.GET.get('format', 'specific')
+    if view_type == 'specific':
+        return SimpleQuery.as_view()(request, *args, **kwargs)
+    elif view_type == 'advanced':
+        return ComplexQuery.as_view()(request, *args, **kwargs)
+
+    error_message =  """The requested format <em>%s</em> does not exist with
+    a content type of <em>html</em>.""" % (view_type,)
+
+    return Error.as_view(message=error_message)(request, *args, **kwargs)
