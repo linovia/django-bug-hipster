@@ -9,10 +9,57 @@ see AUTHORS for more details.
 from __future__ import print_function, division
 from __future__ import absolute_import, unicode_literals
 
+import inspect
+import new
+ 
 from django.utils.encoding import python_2_unicode_compatible
+from django.db.models import query
 from django.db import models
 
 from compositekey import db
+
+
+ 
+class ManagerQuerySet(query.QuerySet):
+    """
+    A base class for querysets that support being converted to managers
+    (for use as a model's `objects` manager) via `ManagerQuerySet.as_manager`.
+    """
+     
+    def as_manager(self, base=models.Manager):
+        """
+        Creates a manager from the current queryset by copying any methods not
+        defined in the queryset class's parent classes (`query.QuerySet` and
+        `ManagerQuerySet`).
+        """
+        cls = self.__class__ # Nested class.
+         
+        class QuerySetManager(base):
+            use_for_related_fields = True
+             
+            def get_query_set(self):
+                return cls(self.model)
+         
+        base_classes = [ManagerQuerySet, query.QuerySet]
+        base_methods = [
+            inspect.getmembers(base, inspect.ismethod) for base in base_classes
+        ]
+         
+        def in_base_class(method_name):
+            for methods in base_methods:
+                for (name, _) in methods:
+                    if name == method_name:
+                        return True
+            return False
+         
+        for (method_name, method) in inspect.getmembers(self, inspect.ismethod):
+             if not in_base_class(method_name):
+                 new_method = new.instancemethod(
+                     method.im_func, None, QuerySetManager
+                 )
+                 setattr(QuerySetManager, method_name, new_method)
+     
+        return QuerySetManager()
 
 # TODO:
 # Manage the field type #7
@@ -226,9 +273,21 @@ class Domain(BaseBugField):
         return self.value
 
 
+class BugQuerySet(ManagerQuerySet):
+    def opened(self):
+        opened_status = Status.objects.filter(is_open=True)
+        return self.filter(status__in=[s.value for s in opened_status])
+
+    def closed(self):
+        closed_status = Status.objects.filter(is_open=False)
+        return self.filter(status__in=[s.value for s in closed_status])
+
+
 @python_2_unicode_compatible
 class BaseBug(models.Model):
     '''Bugzilla bug'''
+
+    objects = BugQuerySet().as_manager()
 
     class Meta:
         abstract = True
