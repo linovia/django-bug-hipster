@@ -7,11 +7,13 @@ see AUTHORS for more details.
 :license: BSD, see LICENSE for more details.
 """
 
+from django_filters.views import FilterView
 from django.views import generic
 from django import http
 
 from . import models
 from . import forms
+from . import filters
 
 
 class ProjectRestrictedMixin(object):
@@ -54,3 +56,9 @@ def bug_creation(request, *args, **kwargs):
     if not request.GET.get('product', None):
         return SelectProduct.as_view()(request, *args, **kwargs)
     return CreateBug.as_view()(request, *args, **kwargs)
+
+
+class BugList(FilterView):
+    template_name = 'bug_list.html'
+    model = models.Bug
+    filterset_class = filters.SimpleQuery

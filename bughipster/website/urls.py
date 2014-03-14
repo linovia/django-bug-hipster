@@ -17,9 +17,9 @@ front_urls = patterns('',
     url(r'^index\.cgi$', views.Home.as_view(), name='home'),
     url(r'^enter_bug\.cgi$', project_views.bug_creation, name='create-bug'),
     url(r'^query\.cgi$', views.query, name='view-query'),
+    url(r'^buglist\.cgi$', project_views.BugList.as_view(), name='list-bug'),
 
     # TODO:
-    url(r'^buglist\.cgi$', views.ToDo.as_view(), name='list-bug'),
     url(r'^describecomponents\.cgi$', views.ToDo.as_view(), name='view-component'),
     url(r'^duplicates\.cgi$', views.ToDo.as_view(), name='duplicates'),
     url(r'^page\.cgi$', views.ToDo.as_view(), name='flatpage'),
