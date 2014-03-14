@@ -11,8 +11,7 @@ from django import http
 from django.views import generic
 from django.core.urlresolvers import reverse
 
-from . import filters
-from bughipster.project import models
+from bughipster.project import models, filters
 
 
 class ToDo(generic.TemplateView):
