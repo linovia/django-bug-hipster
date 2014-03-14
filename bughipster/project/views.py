@@ -50,10 +50,7 @@ class SelectProduct(generic.ListView):
     model = models.Product
 
 
-create_bug = CreateBug.as_view()
-select_product = SelectProduct.as_view()
-
 def bug_creation(request, *args, **kwargs):
     if not request.GET.get('product', None):
-        return select_product(request, *args, **kwargs)
-    return create_bug(request, *args, **kwargs)
+        return SelectProduct.as_view()(request, *args, **kwargs)
+    return CreateBug.as_view()(request, *args, **kwargs)
