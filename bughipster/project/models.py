@@ -213,7 +213,7 @@ class Milestone(models.Model):
 
 @python_2_unicode_compatible
 class Status(BaseBugField):
-    is_open = models.BooleanField(default=True)
+    is_open = models.SmallIntegerField(default=1)
 
     class Meta:
         db_table = 'bug_status'
@@ -275,11 +275,11 @@ class Domain(BaseBugField):
 
 class BugQuerySet(ManagerQuerySet):
     def opened(self):
-        opened_status = Status.objects.filter(is_open=True)
+        opened_status = Status.objects.filter(is_open=1)
         return self.filter(status__in=[s.value for s in opened_status])
 
     def closed(self):
-        closed_status = Status.objects.filter(is_open=False)
+        closed_status = Status.objects.filter(is_open=0)
         return self.filter(status__in=[s.value for s in closed_status])
 
 
