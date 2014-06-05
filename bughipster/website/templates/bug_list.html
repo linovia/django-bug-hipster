@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
+{% load bz_helpers %}
 
 
 {% block css %}
@@ -75,7 +76,7 @@
 
   if (history && history.replaceState) {
     history.replaceState(null, "Bug List",
-                         "buglist.cgi?bug_status=__open__&content=&no_redirect=1&order=relevance%20desc&product=&query_format=specific");
+                         "buglist.cgi?{% create_filtered_query_string request %}");
     document.title = "Bug List";
   }
     // -->
