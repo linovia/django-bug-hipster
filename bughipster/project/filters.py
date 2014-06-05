@@ -12,71 +12,14 @@ from __future__ import absolute_import, unicode_literals
 from itertools import chain
 
 from django import forms
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 import django_filters as filters
 
-from bughipster.project import models
-
-
-#
-# Status filter: all the status states plus __open__ & __closed__ & __all__
-#
-
-class StatusIterator(object):
-
-    def __init__(self, field):
-        self.field = field
-        self.queryset = models.Status.objects.all()
-
-    def __iter__(self):
-        yield ('__all__',    _('All'))
-        yield ('__open__',   _('Open'))
-        yield ('__closed__', _('Closed'))
-        for obj in self.queryset.all():
-            yield self.choice(obj)
-
-    def __len__(self):
-        return (3 + len(self.queryset))
-
-    def choice(self, obj):
-        return (obj.value, obj.value)
-
-
-class StatusModelChoiceField(forms.MultipleChoiceField):
-    def _get_choices(self):
-        if self._choices:
-            return self._choices
-        return StatusIterator(self)
-
-    def _set_choices(self, value):
-        self._choices = self.widget.choices = list(value)
-
-    choices = property(_get_choices, _set_choices)
-
-
-class StatusFilter(filters.MultipleChoiceFilter):
-    field_class = StatusModelChoiceField
-
-    def filter(self, qs, value):
-        value = value or ()
-
-        if value == ['__open__']:
-            return qs.opened().distinct()
-        if value == ['__closed__']:
-            return qs.closed().distinct()
-        if value == ['__all__']:
-            return qs.all().distinct()
-
-        if len(value) == len(self.field.choices):
-            return qs
-        q = Q()
-        for v in value:
-            q |= Q(**{self.name: v})
-        return qs.filter(q).distinct()
+from . import models
+from .filters_utils import StatusFilter, BzModelMultipleChoiceFilter
 
 
 #
@@ -130,16 +73,16 @@ class SimpleQuery(filters.FilterSet):
 
 
 class ComplexQuery(filters.FilterSet):
-    product = filters.ModelMultipleChoiceFilter(
+    product = BzModelMultipleChoiceFilter(
         queryset=models.Product.objects.all(),
-        to_field_name='name', widget=BugzillaSelectMultiple)
-    component = filters.ModelMultipleChoiceFilter(
+        to_field_name='name', widget=BugzillaSelectMultiple, required=False)
+    component = BzModelMultipleChoiceFilter(
         queryset=models.Component.objects.all(),
         to_field_name='name')
-    bug_status = filters.ModelMultipleChoiceFilter(
+    bug_status = BzModelMultipleChoiceFilter(
         queryset=models.Status.objects.all(),
         to_field_name='value')
-    resolution = filters.ModelMultipleChoiceFilter(
+    resolution = BzModelMultipleChoiceFilter(
         queryset=models.Resolution.objects.all(),
         to_field_name='value')
 
