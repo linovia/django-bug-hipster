@@ -1,6 +1,11 @@
 TODO
 ~~~~
 
+global
+------
+- What use it the no_redirect in the urls ?
+
+
 base.html
 ---------
 - Don't hardcode the bugzilla version
@@ -17,6 +22,13 @@ new_bug.html
 ------------
 - don't hardcode the product for view-component url
 - Remove hardcoded TestProduct
+
+
+bug_list
+--------
+- Create the zarro bug template
+- Hardcoded list filters
+- default resolution should be "---" instead of ""
 
 
 create_account.html
@@ -40,3 +52,8 @@ view-component
 create_account
 --------------
 - write the form
+
+
+history template tags
+---------------------
+- create_filtered_query_string: add the extra arguments
