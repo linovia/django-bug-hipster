@@ -136,21 +136,16 @@ class BugzillaModelChoiceIterator(object):
 
 
 class BugzillaMultipleChoiceField(forms.ModelMultipleChoiceField):
+    """
+    Custom ModelMultipleChoiceField to:
+    1) use the right widget
+    2) Use a custom iterator that use the object's value instead of the id
+    """
     widget = BugzillaSelectMultiple
 
     def _get_choices(self):
-        # If self._choices is set, then somebody must have manually set
-        # the property self.choices. In this case, just return self._choices.
         if hasattr(self, '_choices'):
             return self._choices
-
-        # Otherwise, execute the QuerySet in self.queryset to determine the
-        # choices dynamically. Return a fresh ModelChoiceIterator that has not been
-        # consumed. Note that we're instantiating a new ModelChoiceIterator *each*
-        # time _get_choices() is called (and, thus, each time self.choices is
-        # accessed) so that we can ensure the QuerySet has not been consumed. This
-        # construct might look complicated but it allows for lazy evaluation of
-        # the queryset.
         return BugzillaModelChoiceIterator(self)
 
     choices = property(_get_choices, forms.ChoiceField._set_choices)
@@ -162,14 +157,12 @@ class ComplexBugSearch(forms.Form):
     #     to_field_name='name', widget=BugzillaSelectMultiple)
     product = BugzillaMultipleChoiceField(
         queryset=models.Product.objects.all(),
-        to_field_name='name'
-        )
+        to_field_name='name')
     # component = filters.ModelMultipleChoiceFilter(
     #     queryset=models.Component.objects.all(),
     #     to_field_name='name')
     component = BugzillaMultipleChoiceField(
-        queryset=models.Component.objects.all(),
-        )
+        queryset=models.Component.objects.all())
     # bug_status = filters.ModelMultipleChoiceFilter(
     #     queryset=models.Status.objects.all(),
     #     to_field_name='value')
