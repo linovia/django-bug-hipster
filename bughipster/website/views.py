@@ -10,7 +10,7 @@ from django import http
 from django.views import generic
 from django.core.urlresolvers import reverse
 
-from bughipster.project import models, filters
+from bughipster.project import models, filters, forms as project_forms
 
 
 class ToDo(generic.TemplateView):
@@ -58,6 +58,11 @@ class SimpleQuery(generic.TemplateView):
 
 class ComplexQuery(generic.TemplateView):
     template_name = 'complex_search.html'
+
+    def get_context_data(self, **kwargs):
+        result = super(ComplexQuery, self).get_context_data(**kwargs)
+        result['form'] = project_forms.ComplexBugSearch() #filters.ComplexQuery({}, queryset=models.Bug.objects.all()).form
+        return result
 
 
 def query(request, *args, **kwargs):

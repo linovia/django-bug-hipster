@@ -1,4 +1,93 @@
 {% extends  'base.html' %}
+{% load staticfiles %}
+
+
+{% block css %}
+<link rel="Top" href="">
+    <link href="{% static 'skins/standard/global.css' %}" rel="alternate stylesheet" title="Classic">
+    <link href="{% static 'js/yui/assets/skins/sam/autocomplete.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'js/yui/assets/skins/sam/calendar.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'skins/standard/global.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'skins/standard/search_form.css' %}" rel="stylesheet" type="text/css">
+
+
+    <!--[if lte IE 7]>
+    <link href="{% static 'skins/standard/IE-fixes.css' %}" rel="stylesheet"
+        type="text/css" >
+    <![endif]-->
+
+    <link href="{% static 'skins/contrib/Dusk/global.css' %}" rel="stylesheet" type="text/css" title="Dusk">
+{% endblock css %}
+
+    
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'js/yui/yahoo-dom-event/yahoo-dom-event.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/cookie/cookie-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/datasource/datasource-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/connection/connection-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/json/json-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/autocomplete/autocomplete-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/yui/calendar/calendar-min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/global.js' %}"></script>
+
+    <script type="text/javascript">
+    <!--
+        YAHOO.namespace('bugzilla');
+        YAHOO.util.Event.addListener = function (el, sType, fn, obj, overrideContext) {
+               if ( ("onpagehide" in window || YAHOO.env.ua.gecko) && sType === "unload") { sType = "pagehide"; };
+               var capture = ((sType == "focusin" || sType == "focusout") && !YAHOO.env.ua.ie) ? true : false;
+               return this._addListener(el, this._getType(sType), fn, obj, overrideContext, capture);
+         };
+        if ( "onpagehide" in window || YAHOO.env.ua.gecko) {
+            YAHOO.util.Event._simpleRemove(window, "unload", 
+                                           YAHOO.util.Event._unload);
+        }
+        
+        function unhide_language_selector() { 
+            YAHOO.util.Dom.removeClass(
+                'lang_links_container', 'bz_default_hidden'
+            ); 
+        } 
+        YAHOO.util.Event.onDOMReady(unhide_language_selector);
+
+        
+        var BUGZILLA = {
+            param: {
+                cookiepath: '\/',
+                maxusermatches: 1000
+            },
+            constant: {
+                COMMENT_COLS: 80
+            },
+            string: {
+                
+
+                attach_desc_required:
+                    'You must enter a Description for this attachment.',
+                component_required:
+                    'You must select a Component for this bug.',
+                description_required:
+                    'You must enter a Description for this bug.',
+                short_desc_required:
+                    'You must enter a Summary for this bug.',
+                version_required:
+                    'You must select a Version for this bug.'
+            }
+        };
+
+function remove_token() {
+  if (queryform.token) {
+    var asDefault = document.getElementById('remasdefault');
+    queryform.token.disabled = !asDefault.checked;
+  }
+}
+    // -->
+    </script>
+    <script type="text/javascript" src="{% static 'js/util.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/TUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/field.js' %}"></script>
+{% endblock js %}
 
 
 {% block bugzilla-body %}
@@ -69,7 +158,48 @@ TUI_hide_default('information_query');
     <input type="submit" id="Search_top" value="Search">
   </div>
 
+  <div>
+    {{ form.as_p }}
+  </div>
 
+  <div id="container_product" class="search_field_grid">
+    <span class="field_label  required" id="field_label_product">
+      <label for="product" accesskey="p">
+        <a title="Bugs are categorised into Products and Components." class="field_help_link" href="page.cgi?id=fields.html#product">Product:</a>
+      </label>
+    </span>
+    {{ form.product }}
+  </div>
+
+  <script type="text/javascript"><!--
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    showValueWhen('version', [2,3], 'product',2, true);
+    showValueWhen('version', [1], 'product',1, true);
+
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    showValueWhen('target_milestone', [2], 'product',2, true);
+    showValueWhen('target_milestone', [1], 'product',1, true);
+
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    showValueWhen('component', [2,3], 'product',2, true);
+    showValueWhen('component', [1], 'product',1, true);
+    // --></script>
+
+
+  {# OLD UI #}
+  {% comment %}
   <div id="container_product" class="search_field_grid">
     <span class="field_label  required" id="field_label_product">
       <label for="product" accesskey="p">
@@ -84,6 +214,8 @@ TUI_hide_default('information_query');
 
   <script type="text/javascript"><!--
     YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('version', [2,3], 'product',2, true); showValueWhen('version', [1], 'product',1, true);YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('target_milestone', [2], 'product',2, true); showValueWhen('target_milestone', [1], 'product',1, true);YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('component', [2,3], 'product',2, true); showValueWhen('component', [1], 'product',1, true);// --></script>
+  {% endcomment %}
+
   <div id="container_component" class="search_field_grid">
     <span class="field_label  required" id="field_label_component">
 
@@ -94,7 +226,7 @@ TUI_hide_default('information_query');
     </span>
     <select name="component" id="component" multiple="multiple" size="7">
         <option value="comp" id="v2_component" class="">comp</option>
-        <!--TestComponent-->
+        <option value="TestComponent" id="v1_component" class="">TestComponent</option>
         <option value="toto" id="v3_component" class="">toto</option>
     </select>
   </div>
@@ -780,13 +912,14 @@ March 2014
         <button id="cp_button" type="button" title="End this group of criteria" onclick="custom_search_close_paren()">)</button>
       </span>
   </div>
+
   <script type="text/javascript">
     TUI_alternates['custom_search_query'] = '&#9658;';
     TUI_hide_default('custom_search_query');
     TUI_alternates['custom_search_advanced'] = "Show Advanced Features";
     TUI_hide_default('custom_search_advanced');
   </script>
-  <script type="text/javascript" src="js/custom-search.js"></script>
+  <script type="text/javascript" src="{% static 'js/custom-search.js' %}"></script>
   <script type="text/javascript">
     redirect_html4_browsers();
     
@@ -794,7 +927,7 @@ March 2014
     var cs_or_label  = 'Match ANY of the following:';
     cs_reconfigure('custom_search_last_row');
   </script>
-  <script type="text/javascript" src="js/history.js/native.history.js"></script>
+  <script type="text/javascript" src="{% static 'js/history.js/native.history.js' %}"></script>
 </div>
 <input type="hidden" name="cmdtype" value="doit">
 
@@ -820,4 +953,4 @@ March 2014
   </div>
 
 </div>
-{% block bugzilla-body %}
+{% endblock bugzilla-body %}
