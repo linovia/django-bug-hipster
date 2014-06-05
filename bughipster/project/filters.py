@@ -70,7 +70,7 @@ class Bug(filters.FilterSet):
 
 
 class SimpleQuery(filters.FilterSet):
-    bug_status = StatusFilter(label=_('Status'), choices=(
+    bug_status = filters.ChoiceFilter(label=_('Status'), choices=(
         ('__open__', _('Open')),
         ('__closed__', _('Closed')),
         ('__all__', _('All')),
