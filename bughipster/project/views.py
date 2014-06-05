@@ -60,4 +60,4 @@ def bug_creation(request, *args, **kwargs):
 class BugList(FilterView):
     template_name = 'bug_list.html'
     model = models.Bug
-    filterset_class = filters.SimpleQuery
+    filterset_class = filters.FullQuery

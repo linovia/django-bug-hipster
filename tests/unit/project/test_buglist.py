@@ -59,7 +59,29 @@ def test_filter_on_bug_status():
 
     rf = RequestFactory()
 
-    # The 3 first tests here are for Bugzilla compatibility
+    # Make sure bug_status also works with regular status
+
+    # Test with bug_status either NEW or CLOSED
+    request = rf.get('buglist.cgi?bug_status=NEW&bug_status=CLOSED')
+    response = views.BugList.as_view()(request)
+    bug_list = response.context_data['bug_list']
+    assert len(bug_list) == 2
+
+    # Test with bug_status=NEW
+    request = rf.get('buglist.cgi?bug_status=NEW')
+    response = views.BugList.as_view()(request)
+    bug_list = response.context_data['bug_list']
+    assert len(bug_list) == 1
+    assert bug_list[0].title == bug1.title
+
+    # Test with bug_status=CLOSED
+    request = rf.get('buglist.cgi?bug_status=CLOSED')
+    response = views.BugList.as_view()(request)
+    bug_list = response.context_data['bug_list']
+    assert len(bug_list) == 1
+    assert bug_list[0].title == bug2.title
+
+    # The 3 tests here are for Bugzilla compatibility with simple search
 
     # Test with bug_status=__open__
     request = rf.get('buglist.cgi?bug_status=__open__')
@@ -81,18 +103,8 @@ def test_filter_on_bug_status():
     bug_list = response.context_data['bug_list']
     assert len(bug_list) == 2
 
-    # Now make sure bug_status also works with regular status
-
-    # Test with bug_status=NEW
-    request = rf.get('buglist.cgi?bug_status=NEW')
+    # Test with an empty bug status
+    request = rf.get('buglist.cgi?bug_status=')
     response = views.BugList.as_view()(request)
     bug_list = response.context_data['bug_list']
-    assert len(bug_list) == 1
-    assert bug_list[0].title == bug1.title
-
-    # Test with bug_status=CLOSED
-    request = rf.get('buglist.cgi?bug_status=CLOSED')
-    response = views.BugList.as_view()(request)
-    bug_list = response.context_data['bug_list']
-    assert len(bug_list) == 1
-    assert bug_list[0].title == bug2.title
+    assert len(bug_list) == 2
