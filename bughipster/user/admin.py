@@ -1,3 +1,11 @@
+"""
+bughispster.user.admin
+~~~~~~~~~~~~~~~~~~~~~~
+
+:copyright: (c) 2013-2014 by Xavier Ordoquy, see AUTHORS for more details.
+:license: BSD, see LICENSE for more details.
+"""
+
 from django.db import transaction
 from django.conf import settings
 from django.contrib import admin

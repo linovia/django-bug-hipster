@@ -2,7 +2,8 @@
 bughipster.project.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Forms for the website pages
+:copyright: (c) 2013-2014 by Xavier Ordoquy, see AUTHORS for more details.
+:license: BSD, see LICENSE for more details.
 """
 
 from django import forms

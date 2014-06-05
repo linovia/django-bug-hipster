@@ -2,8 +2,7 @@
 bughipster.project.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:copyright: (c) 2014 by Xavier Ordoquy,
-see AUTHORS for more details.
+:copyright: (c) 2014 by Xavier Ordoquy, see AUTHORS for more details.
 :license: BSD, see LICENSE for more details.
 """
 from __future__ import print_function, division

@@ -1,3 +1,11 @@
+"""
+bughispster.user.forms
+~~~~~~~~~~~~~~~~~~~~~~
+
+:copyright: (c) 2013-2014 by Xavier Ordoquy, see AUTHORS for more details.
+:license: BSD, see LICENSE for more details.
+"""
+
 from __future__ import unicode_literals
 
 from django import forms
