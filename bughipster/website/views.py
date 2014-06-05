@@ -10,7 +10,7 @@ from django import http
 from django.views import generic
 from django.core.urlresolvers import reverse
 
-from bughipster.project import models, filters, forms as project_forms
+from bughipster.project import models, filters
 
 
 class ToDo(generic.TemplateView):
@@ -61,7 +61,20 @@ class ComplexQuery(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         result = super(ComplexQuery, self).get_context_data(**kwargs)
-        result['form'] = project_forms.ComplexBugSearch() #filters.ComplexQuery({}, queryset=models.Bug.objects.all()).form
+        # result['form'] = project_forms.ComplexBugSearch()
+
+        # TODO: Check project's permission.
+        result['projects'] = list(models.Product.objects.all().order_by('name'))
+        result['components'] = list(models.Component.objects.all().order_by('product__id', 'name').distinct())
+        result['statuses'] = list(models.Status.objects.all().order_by('sortkey', 'value'))
+
+        # Sort the components per project
+        comp_per_project = {}
+        for comp in result['components']:
+            comp_per_project.setdefault(comp.product.id, []).append(comp.id)
+        result['components_per_project'] = comp_per_project
+
+        # Filter the various values based on authorized projects.
         return result
 
 

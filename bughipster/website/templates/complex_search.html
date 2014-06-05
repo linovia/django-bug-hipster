@@ -158,63 +158,47 @@ TUI_hide_default('information_query');
     <input type="submit" id="Search_top" value="Search">
   </div>
 
-  <div>
-    {{ form.as_p }}
-  </div>
-
   <div id="container_product" class="search_field_grid">
     <span class="field_label  required" id="field_label_product">
       <label for="product" accesskey="p">
-        <a title="Bugs are categorised into Products and Components." class="field_help_link" href="page.cgi?id=fields.html#product">Product:</a>
-      </label>
-    </span>
-    {{ form.product }}
-  </div>
-
-  <script type="text/javascript"><!--
-    YAHOO.util.Event.onDOMReady(function() {
-      var field = document.getElementById('product');
-      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
-    });
-
-    showValueWhen('version', [2,3], 'product',2, true);
-    showValueWhen('version', [1], 'product',1, true);
-
-    YAHOO.util.Event.onDOMReady(function() {
-      var field = document.getElementById('product');
-      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
-    });
-
-    showValueWhen('target_milestone', [2], 'product',2, true);
-    showValueWhen('target_milestone', [1], 'product',1, true);
-
-    YAHOO.util.Event.onDOMReady(function() {
-      var field = document.getElementById('product');
-      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
-    });
-
-    showValueWhen('component', [2,3], 'product',2, true);
-    showValueWhen('component', [1], 'product',1, true);
-    // --></script>
-
-
-  {# OLD UI #}
-  {% comment %}
-  <div id="container_product" class="search_field_grid">
-    <span class="field_label  required" id="field_label_product">
-      <label for="product" accesskey="p">
-        <a title="Bugs are categorised into Products and Components." class="field_help_link" href="page.cgi?id=fields.html#product">Product:</a>
+        <a title="Bugs are categorised into Products and Components."
+            class="field_help_link" href="page.cgi?id=fields.html#product">Product:</a>
       </label>
     </span>
     <select name="product" id="product" multiple="multiple" size="7">
-        <option value="Demo" id="v2_product">Demo</option>
-        <option value="TestProduct" id="v1_product">TestProduct</option>
+        {% for project in projects %}
+        <option value="{{ project.name }}" id="v{{project.id}}_product">{{ project.name }}</option>
+        {% endfor %}
     </select>
+
   </div>
 
   <script type="text/javascript"><!--
-    YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('version', [2,3], 'product',2, true); showValueWhen('version', [1], 'product',1, true);YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('target_milestone', [2], 'product',2, true); showValueWhen('target_milestone', [1], 'product',1, true);YAHOO.util.Event.onDOMReady(function() { var field = document.getElementById('product'); if (field.selectedIndex != -1) bz_fireEvent(field, 'change'); }); showValueWhen('component', [2,3], 'product',2, true); showValueWhen('component', [1], 'product',1, true);// --></script>
-  {% endcomment %}
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    showValueWhen('version', [2,3], 'product', 2, true);
+    showValueWhen('version', [1], 'product', 1, true);
+
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    showValueWhen('target_milestone', [2], 'product', 2, true);
+    showValueWhen('target_milestone', [1], 'product', 1, true);
+
+    YAHOO.util.Event.onDOMReady(function() {
+      var field = document.getElementById('product');
+      if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
+    });
+
+    {% for product_id, component_ids in components_per_project.items %}showValueWhen('component', {{ component_ids }}, 'product', {{ product_id }}, true);
+    {% endfor %}
+    // --></script>
+
 
   <div id="container_component" class="search_field_grid">
     <span class="field_label  required" id="field_label_component">
@@ -225,9 +209,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="component" id="component" multiple="multiple" size="7">
-        <option value="comp" id="v2_component" class="">comp</option>
-        <option value="TestComponent" id="v1_component" class="">TestComponent</option>
-        <option value="toto" id="v3_component" class="">toto</option>
+        {% for component in components %}
+        <option value="{{ component.name }}" id="v{{ component.id }}_component" class="">{{ component.name }}</option>
+        {% endfor %}
     </select>
   </div>
 
@@ -238,11 +222,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="bug_status" id="bug_status" multiple="multiple" size="7">
-        <option value="UNCONFIRMED" id="v1_bug_status">UNCONFIRMED</option>
-        <option value="CONFIRMED" id="v2_bug_status">CONFIRMED</option>
-        <option value="IN_PROGRESS" id="v3_bug_status">IN_PROGRESS</option>
-        <option value="RESOLVED" id="v4_bug_status">RESOLVED</option>
-        <option value="VERIFIED" id="v5_bug_status">VERIFIED</option>
+        {% for status in statuses %}
+        <option value="{{ status.value }}" id="v{{ status.id }}_bug_status">{{ status.value }}</option>
+        {% endfor %}
     </select>
   </div>
 
