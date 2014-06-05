@@ -24,6 +24,7 @@ front_urls = patterns('',
     url(r'^page\.cgi$', views.ToDo.as_view(), name='flatpage'),
     url(r'^report\.cgi$', views.ToDo.as_view(), name='view-report'),
     url(r'^search_plugin\.cgi$', views.ToDo.as_view(), name='search-plugin'),
+    url(r'^show_bug\.cgi$', views.ToDo.as_view(), name='bug-details'),
 )
 
 admin_urls = patterns('',
