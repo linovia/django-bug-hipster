@@ -109,7 +109,7 @@ function remove_token() {
   <div class="tabbody">
     <p id="search_help">Hover your mouse over each field label to get help for that field.</p>
 
-<form method="post" action="buglist.cgi" name="queryform" id="queryform" onsubmit="remove_token()">
+<form method="post" action="{% url 'front:list-bug' %}" name="queryform" id="queryform" onsubmit="remove_token()">
 
   <input type="hidden" id="no_redirect" name="no_redirect" value="1">
   <script type="text/javascript">
@@ -140,14 +140,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="short_desc_type" title="Search type" class="">
-      <option value="allwordssubstr">contains all of the strings</option>
-      <option value="anywordssubstr">contains any of the strings</option>
-      <option value="substring">contains the string</option>
-      <option value="casesubstring">contains the string (exact case)</option>
-      <option value="allwords">contains all of the words</option>
-      <option value="anywords">contains any of the words</option>
-      <option value="regexp">matches regular expression</option>
-      <option value="notregexp">does not match regular expression</option>
+      {% for key, label in SEARCH_TYPE %}
+      <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
     </select>    
     <input name="short_desc" id="short_desc" size="40" value="">
       <script type="text/javascript"> <!--
@@ -272,14 +267,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="longdesc_type" title="Search type" class="">
-        <option value="allwordssubstr">contains all of the strings</option>
-        <option value="anywordssubstr">contains any of the strings</option>
-        <option value="substring">contains the string</option>
-        <option value="casesubstring">contains the string (exact case)</option>
-        <option value="allwords">contains all of the words</option>
-        <option value="anywords">contains any of the words</option>
-        <option value="regexp">matches regular expression</option>
-        <option value="notregexp">does not match regular expression</option>
+      {% for key, label in SEARCH_TYPE %}
+      <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
     </select>    
     <input name="longdesc" id="longdesc" size="40" value="">
   </div>
@@ -291,14 +281,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="bug_file_loc_type" title="Search type" class="">
-        <option value="allwordssubstr">contains all of the strings</option>
-        <option value="anywordssubstr">contains any of the strings</option>
-        <option value="substring">contains the string</option>
-        <option value="casesubstring">contains the string (exact case)</option>
-        <option value="allwords">contains all of the words</option>
-        <option value="anywords">contains any of the words</option>
-        <option value="regexp">matches regular expression</option>
-        <option value="notregexp">does not match regular expression</option>
+      {% for key, label in SEARCH_TYPE %}
+      <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
     </select>    
     <input name="bug_file_loc" id="bug_file_loc" size="40" value="">
   </div>
@@ -311,8 +296,9 @@ TUI_hide_default('information_query');
     </div>
     should be 
     <select name="bug_id_type" id="bug_id_type">
-      <option value="anyexact">only included in</option>
-      <option value="nowords">excluded from</option>
+      {% for key, value in BUG_TYPE %}
+      <option value="{{ key }}">{{ value }}</option>
+      {% endfor %}
     </select> the results
   </div>
 
@@ -441,12 +427,9 @@ TUI_hide_default('information_query');
     </label>
   </div>
       <select name="emailtype1">
-        <option value="substring">contains</option>
-        <option value="notsubstring">doesn't contain</option>
-        <option value="exact">is</option>
-        <option value="notequals">is not</option>
-        <option value="regexp">matches regexp</option>
-        <option value="notregexp">doesn't match regexp</option>
+        {% for key, value in EMAIL_TYPE %}
+        <option value="{{ key }}">{{ value }}</option>
+        {% endfor %}
       </select>
         <div id="email1_autocomplete" class="yui-ac">
       <input name="email1" class="email yui-ac-input" id="email1" value="" autocomplete="off">
@@ -476,12 +459,9 @@ TUI_hide_default('information_query');
     </label>
   </div>
       <select name="emailtype2">
-        <option value="substring">contains</option>
-        <option value="notsubstring">doesn't contain</option>
-        <option value="exact">is</option>
-        <option value="notequals">is not</option>
-        <option value="regexp">matches regexp</option>
-        <option value="notregexp">doesn't match regexp</option>
+        {% for key, value in EMAIL_TYPE %}
+        <option value="{{ key }}">{{ value }}</option>
+        {% endfor %}
       </select>
         <div id="email2_autocomplete" class="yui-ac">
       <input name="email2" class="email yui-ac-input" id="email2" value="" autocomplete="off">
@@ -511,12 +491,9 @@ TUI_hide_default('information_query');
     </label>
   </div>
       <select name="emailtype3">
-        <option value="substring">contains</option>
-        <option value="notsubstring">doesn't contain</option>
-        <option value="exact">is</option>
-        <option value="notequals">is not</option>
-        <option value="regexp">matches regexp</option>
-        <option value="notregexp">doesn't match regexp</option>
+        {% for key, value in EMAIL_TYPE %}
+        <option value="{{ key }}">{{ value }}</option>
+        {% endfor %}
       </select>
         <div id="email3_autocomplete" class="yui-ac">
       <input name="email3" class="email yui-ac-input" id="email3" value="" autocomplete="off">
@@ -868,33 +845,10 @@ March 2014
           </option>
       </select>
     <select name="o1" title="Search type" class="custom_search_form_field">
-    <option value="noop">---</option>
-    <option value="equals">is equal to</option>
-    <option value="notequals">is not equal to</option>
-    <option value="anyexact">is equal to any of the strings</option>
-    <option value="substring">contains the string</option>
-    <option value="casesubstring">contains the string (exact case)</option>
-    <option value="notsubstring">does not contain the string</option>
-    <option value="anywordssubstr">contains any of the strings</option>
-    <option value="allwordssubstr">contains all of the strings</option>
-    <option value="nowordssubstr">contains none of the strings</option>
-    <option value="regexp">matches regular expression</option>
-    <option value="notregexp">does not match regular expression</option>
-    <option value="lessthan">is less than</option>
-    <option value="lessthaneq">is less than or equal to</option>
-    <option value="greaterthan">is greater than</option>
-    <option value="greaterthaneq">is greater than or equal to</option>
-    <option value="anywords">contains any of the words</option>
-    <option value="allwords">contains all of the words</option>
-    <option value="nowords">contains none of the words</option>
-    <option value="changedbefore">changed before</option>
-    <option value="changedafter">changed after</option>
-    <option value="changedfrom">changed from</option>
-    <option value="changedto">changed to</option>
-    <option value="changedby">changed by</option>
-    <option value="matches">matches</option>
-    <option value="notmatches">does not match</option>
-</select>
+      {% for key, value in BUG_TYPE %}
+        <option value="{{ key }}">{{ value }}</option>
+      {% endfor %}
+    </select>
     
       <input name="v1" title="Value" class="custom_search_form_field" onchange="fix_query_string(this)" value="">
     

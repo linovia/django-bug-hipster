@@ -59,6 +59,65 @@ class SimpleQuery(generic.TemplateView):
 #
 # Complex query page helpers
 #
+
+SUMMARY_TYPE = (
+    ("allwordssubstr", "contains all of the strings"), 
+    ("anywordssubstr", "contains any of the strings"), 
+    ("substring",      "contains the string"), 
+    ("casesubstring",  "contains the string (exact case)"), 
+    ("allwords",       "contains all of the words"), 
+    ("anywords",       "contains any of the words"), 
+    ("regexp",         "matches regular expression"), 
+    ("notregexp",      "does not match regular expression"), 
+)
+
+
+BUG_TYPE = (
+    ("anyexact", "only included in"),
+    ("nowords", "excluded from"),
+)
+
+
+EMAIL_TYPE = (
+    ("substring", "contains"),
+    ("notsubstring", "doesn't contain"),
+    ("exact", "is"),
+    ("notequals", "is not"),
+    ("regexp", "matches regexp"),
+    ("notregexp", "doesn't match regexp"),
+)
+
+
+BUG_TYPE = (
+    <option value="noop">---</option>
+    <option value="equals">is equal to</option>
+    <option value="notequals">is not equal to</option>
+    <option value="anyexact">is equal to any of the strings</option>
+    <option value="substring">contains the string</option>
+    <option value="casesubstring">contains the string (exact case)</option>
+    <option value="notsubstring">does not contain the string</option>
+    <option value="anywordssubstr">contains any of the strings</option>
+    <option value="allwordssubstr">contains all of the strings</option>
+    <option value="nowordssubstr">contains none of the strings</option>
+    <option value="regexp">matches regular expression</option>
+    <option value="notregexp">does not match regular expression</option>
+    <option value="lessthan">is less than</option>
+    <option value="lessthaneq">is less than or equal to</option>
+    <option value="greaterthan">is greater than</option>
+    <option value="greaterthaneq">is greater than or equal to</option>
+    <option value="anywords">contains any of the words</option>
+    <option value="allwords">contains all of the words</option>
+    <option value="nowords">contains none of the words</option>
+    <option value="changedbefore">changed before</option>
+    <option value="changedafter">changed after</option>
+    <option value="changedfrom">changed from</option>
+    <option value="changedto">changed to</option>
+    <option value="changedby">changed by</option>
+    <option value="matches">matches</option>
+    <option value="notmatches">does not match</option>
+)
+
+
 def item_per_project(items):
     """
     Create a dictionary of {project_id: [item_ids]} which allows the page
@@ -126,6 +185,11 @@ class ComplexQuery(generic.TemplateView):
             result['per_project'][key] = item_per_project(result[key])
             result['duplicates'][key] = duplicates
             result[key] = [v for v in result[key] if v.id not in duplicates['duplicates']]
+
+        result['SUMMARY_TYPE'] = SUMMARY_TYPE
+        result['BUG_TYPE'] = BUG_TYPE
+        result['EMAIL_TYPE'] = EMAIL_TYPE
+        result['SEARCH_TYPE'] = SEARCH_TYPE
 
         # Filter the various values based on authorized projects.
         return result
