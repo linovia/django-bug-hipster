@@ -1,5 +1,6 @@
-Django==1.5.5
+Django==1.5.6
 psycopg2
 logan==0.5.9.1
 django-crispy-forms==1.4.0
 django-filter==0.7
+-e git+git@github.com:simone/django-compositekey.git
