@@ -63,8 +63,6 @@ class ManagerQuerySet(query.QuerySet):
 # TODO:
 # Manage the field type #7
 # Manage the field type #3
-# Rename op_sys -> os
-# Rename rep_platform -> Domain
 
 
 CF_TYPE_CHOICES = (
