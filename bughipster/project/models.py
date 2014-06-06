@@ -155,7 +155,7 @@ class Component(models.Model):
     product = models.ForeignKey('project.Product')
     owner = models.ForeignKey('user.Profile', db_index=False,
         db_column='initialowner', related_name='owned_components')
-    qa = models.ForeignKey('user.Profile', null=True,
+    qa = models.ForeignKey('user.Profile', null=True, blank=True,
         db_column='initialqacontact', related_name='watched_compononets')
     description = models.TextField(default='')
     active = models.BooleanField(db_column='isactive', default=True)
