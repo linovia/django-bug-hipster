@@ -265,7 +265,7 @@ class OS(BaseBugField):
 
 
 @python_2_unicode_compatible
-class Domain(BaseBugField):
+class Hardware(BaseBugField):
     class Meta:
         db_table = 'rep_platform'
         ordering = ['sortkey', 'value']
