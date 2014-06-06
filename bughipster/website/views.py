@@ -107,14 +107,23 @@ class ComplexQuery(generic.TemplateView):
         # Generic data
         result['statuses'] = list(models.Status.objects.all().order_by('sortkey', 'value'))
         result['resolutions'] = list(models.Resolution.objects.all().order_by('sortkey', 'value').distinct())
+        result['severities'] = list(models.Severity.objects.all().order_by('sortkey', 'value'))
+        result['priorities'] = list(models.Priority.objects.all().order_by('sortkey', 'value'))
 
         # TODO: Check project's permission.
         result['projects'] = list(models.Product.objects.all().order_by('name'))
         result['components'] = list(models.Component.objects.all().order_by('product__id', 'name').distinct())
         result['versions'] = list(models.Version.objects.all().order_by('id').distinct())
+        result['milestones'] = list(models.Milestone.objects.all().order_by('sortkey', 'value').distinct())
 
         # Sort the components/version/other per project
-        result['per_project'] = dict((key, item_per_project(result[key])) for key in ['components', 'versions'])
+        result['per_project'] = {}
+        result['duplicates'] = {}
+        for key in ['components', 'versions', 'milestones']:
+            duplicates = remove_duplicates(result[key])
+            result['per_project'][key] = item_per_project(result[key])
+            result['duplicates'][key] = duplicates
+            result[key] = [v for v in result[key] if v.id not in duplicates['duplicates']]
 
         # Filter the various values based on authorized projects.
         return result

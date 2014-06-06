@@ -217,6 +217,13 @@ TUI_hide_default('information_query');
     </select>
   </div>
 
+    {% if duplicates.components %}
+      <script type="text/javascript">
+       bz_option_duplicates['component'] = {{ duplicates.components.duplicates }};
+       bz_option_duplicate_count['component'] = {{ duplicates.components.count }};
+      </script>
+    {% endif %}
+
   <div id="container_bug_status" class="search_field_grid">
     <span class="field_label " id="field_label_bug_status">
       <label for="bug_status" accesskey="a">
@@ -326,65 +333,65 @@ TUI_hide_default('information_query');
       </select>
     </div>
 
+    {% if duplicates.versions %}
       <script type="text/javascript">
-       bz_option_duplicates['version'] = {1:2};
-       bz_option_duplicate_count['version'] = {2:1 };
+       bz_option_duplicates['version'] = {{ duplicates.versions.duplicates }};
+       bz_option_duplicate_count['version'] = {{ duplicates.versions.count }};
       </script>
+    {% endif %}
 
-
-      <div id="container_target_milestone" class="search_field_grid">
-        <span class="field_label " id="field_label_target_milestone">
-
-    <label for="target_milestone">
-
-  <a title="The Target Milestone field is used to define when the engineer the bug is assigned to expects to fix it." class="field_help_link" href="page.cgi?id=fields.html#target_milestone">Target Milestone:</a>
-</label>
-</span>
+    <div id="container_target_milestone" class="search_field_grid">
+      <span class="field_label " id="field_label_target_milestone">
+        <label for="target_milestone">
+          <a title="The Target Milestone field is used to define when the engineer the bug is assigned to expects to fix it." class="field_help_link" href="page.cgi?id=fields.html#target_milestone">Target Milestone:</a>
+        </label>
+      </span>
       <select name="target_milestone" id="target_milestone" multiple="multiple" size="7">
-          <option value="---" id="v2_target_milestone">---</option>
+        {% for milestone in milestones %}
+        <option value="{{ milestone.value }}" id="v{{ milestone.id }}_target_milestone">{{ milestone.value }}</option>
+        {% endfor %}
       </select>
     </div>
 
+    {% if duplicates.versions %}
       <script type="text/javascript">
-       bz_option_duplicates['target_milestone'] = {1:2}; bz_option_duplicate_count['target_milestone'] = {2:1 };
-      </script><div id="container_bug_severity" class="search_field_grid">      <span class="field_label " id="field_label_bug_severity">
+       bz_option_duplicates['target_milestone'] = {{ duplicates.milestones.duplicates }};
+       bz_option_duplicate_count['target_milestone'] = {{ duplicates.milestones.count }};
+      </script>
+    {% endif %}
 
-    <label for="bug_severity" accesskey="v">
-
-  <a title="How severe the bug is, or whether it's an enhancement." class="field_help_link" href="page.cgi?id=fields.html#bug_severity">Severity:</a>
-</label>
-</span>
+    <div id="container_bug_severity" class="search_field_grid">
+      <span class="field_label " id="field_label_bug_severity">
+        <label for="bug_severity" accesskey="v">
+          <a title="How severe the bug is, or whether it's an enhancement." class="field_help_link" href="page.cgi?id=fields.html#bug_severity">Severity:</a>
+        </label>
+      </span>
       <select name="bug_severity" id="bug_severity" multiple="multiple" size="7">
-          <option value="blocker" id="v1_bug_severity">blocker</option>
-          <option value="critical" id="v2_bug_severity">critical</option>
-          <option value="major" id="v3_bug_severity">major</option>
-          <option value="normal" id="v4_bug_severity">normal</option>
-          <option value="minor" id="v5_bug_severity">minor</option>
-          <option value="trivial" id="v6_bug_severity">trivial</option>
-          <option value="enhancement" id="v7_bug_severity">enhancement</option>
+          {% for severity in severities %}
+          <option value="{{ severity.value }}" id="v{{ severity.id }}_bug_severity">{{ severity.value }}</option>
+          {% endfor %}
       </select>
-    </div><div id="container_priority" class="search_field_grid">      <span class="field_label " id="field_label_priority">
+    </div>
 
-    <label for="priority" accesskey="i">
-
-  <a title="Engineers prioritize their bugs using this field." class="field_help_link" href="page.cgi?id=fields.html#priority">Priority:</a>
-</label>
-</span>
+    <div id="container_priority" class="search_field_grid">
+      <span class="field_label " id="field_label_priority">
+        <label for="priority" accesskey="i">
+          <a title="Engineers prioritize their bugs using this field." class="field_help_link" href="page.cgi?id=fields.html#priority">Priority:</a>
+        </label>
+      </span>
       <select name="priority" id="priority" multiple="multiple" size="7">
-          <option value="Highest" id="v1_priority">Highest</option>
-          <option value="High" id="v2_priority">High</option>
-          <option value="Normal" id="v3_priority">Normal</option>
-          <option value="Low" id="v4_priority">Low</option>
-          <option value="Lowest" id="v5_priority">Lowest</option>
-          <option value="---" id="v6_priority">---</option>
+          {% for priority in priorities %}
+          <option value="{{ priority.value }}" id="v{{ priority.id }}_priority">{{ priority.value }}</option>
+          {% endfor %}
       </select>
-    </div>    <div id="container_rep_platform" class="search_field_grid">      <span class="field_label " id="field_label_rep_platform">
+    </div>
 
-    <label for="rep_platform" accesskey="h">
-
-  <a title="The hardware platform the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;." class="field_help_link" href="page.cgi?id=fields.html#rep_platform">Hardware:</a>
-</label>
-</span>
+    <div id="container_rep_platform" class="search_field_grid">
+      <span class="field_label " id="field_label_rep_platform">
+        <label for="rep_platform" accesskey="h">
+          <a title="The hardware platform the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;." class="field_help_link" href="page.cgi?id=fields.html#rep_platform">Hardware:</a>
+        </label>
+      </span>
       <select name="rep_platform" id="rep_platform" multiple="multiple" size="7">
           <option value="All" id="v1_rep_platform">All</option>
           <option value="PC" id="v2_rep_platform">PC</option>
