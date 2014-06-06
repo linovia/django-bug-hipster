@@ -158,7 +158,7 @@ class Component(models.Model):
     qa = models.ForeignKey('user.Profile', null=True, blank=True,
         db_column='initialqacontact', related_name='watched_compononets')
     description = models.TextField(default='')
-    active = models.BooleanField(db_column='isactive', default=True)
+    active = models.IntegerField(db_column='isactive', default=True)
     cc = models.ManyToManyField('user.Profile',
         related_name='components', through='ComponentCC',
         null=True, blank=True)
