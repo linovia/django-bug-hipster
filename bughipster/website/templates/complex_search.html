@@ -262,53 +262,52 @@ TUI_hide_default('information_query');
   </span>
 </div>
 
+
 <div id="detailed_information_section" class="bz_search_section information_query bz_tui_hidden">
-  
-  
-    <div class="search_field_row"><span class="field_label " id="field_label_longdesc">
 
-    <label for="longdesc" accesskey="c">
-
-  <a title="Bugs have comments added to them by Bugzilla users. You can search for some text in those comments." class="field_help_link" href="page.cgi?id=fields.html#longdesc">Comment:</a>
-</label>
-</span><select name="longdesc_type" title="Search type" class="">
-    <option value="allwordssubstr">contains all of the strings</option>
-    <option value="anywordssubstr">contains any of the strings</option>
-    <option value="substring">contains the string</option>
-    <option value="casesubstring">contains the string (exact case)</option>
-    <option value="allwords">contains all of the words</option>
-    <option value="anywords">contains any of the words</option>
-    <option value="regexp">matches regular expression</option>
-    <option value="notregexp">does not match regular expression</option>
-</select>    
+  <div class="search_field_row">
+    <span class="field_label " id="field_label_longdesc">
+      <label for="longdesc" accesskey="c">
+        <a title="Bugs have comments added to them by Bugzilla users. You can search for some text in those comments." class="field_help_link" href="page.cgi?id=fields.html#longdesc">Comment:</a>
+      </label>
+    </span>
+    <select name="longdesc_type" title="Search type" class="">
+        <option value="allwordssubstr">contains all of the strings</option>
+        <option value="anywordssubstr">contains any of the strings</option>
+        <option value="substring">contains the string</option>
+        <option value="casesubstring">contains the string (exact case)</option>
+        <option value="allwords">contains all of the words</option>
+        <option value="anywords">contains any of the words</option>
+        <option value="regexp">matches regular expression</option>
+        <option value="notregexp">does not match regular expression</option>
+    </select>    
     <input name="longdesc" id="longdesc" size="40" value="">
-    </div>
-    <div class="search_field_row"><span class="field_label " id="field_label_bug_file_loc">
+  </div>
 
-    <label for="bug_file_loc" accesskey="u">
-
-  <a title="Bugs can have a URL associated with them - for example, a pointer to a web site where the problem is seen." class="field_help_link" href="page.cgi?id=fields.html#bug_file_loc">URL:</a>
-</label>
-</span><select name="bug_file_loc_type" title="Search type" class="">
-    <option value="allwordssubstr">contains all of the strings</option>
-    <option value="anywordssubstr">contains any of the strings</option>
-    <option value="substring">contains the string</option>
-    <option value="casesubstring">contains the string (exact case)</option>
-    <option value="allwords">contains all of the words</option>
-    <option value="anywords">contains any of the words</option>
-    <option value="regexp">matches regular expression</option>
-    <option value="notregexp">does not match regular expression</option>
-</select>    
+  <div class="search_field_row">
+    <span class="field_label " id="field_label_bug_file_loc">
+      <label for="bug_file_loc" accesskey="u">
+        <a title="Bugs can have a URL associated with them - for example, a pointer to a web site where the problem is seen." class="field_help_link" href="page.cgi?id=fields.html#bug_file_loc">URL:</a>
+      </label>
+    </span>
+    <select name="bug_file_loc_type" title="Search type" class="">
+        <option value="allwordssubstr">contains all of the strings</option>
+        <option value="anywordssubstr">contains any of the strings</option>
+        <option value="substring">contains the string</option>
+        <option value="casesubstring">contains the string (exact case)</option>
+        <option value="allwords">contains all of the words</option>
+        <option value="anywords">contains any of the words</option>
+        <option value="regexp">matches regular expression</option>
+        <option value="notregexp">does not match regular expression</option>
+    </select>    
     <input name="bug_file_loc" id="bug_file_loc" size="40" value="">
-    </div>
-
-  
+  </div>
 
   <div class="search_field_row">
     <span class="field_label"><label for="bug_id">Bugs numbered</label></span>
     <div id="bug_id_container">
       <input type="text" name="bug_id" id="bug_id" value="" size="20">
-           <div class="field_help">(comma-separated list)</div>
+      <div class="field_help">(comma-separated list)</div>
     </div>
     should be 
     <select name="bug_id_type" id="bug_id_type">
@@ -317,8 +316,6 @@ TUI_hide_default('information_query');
     </select> the results
   </div>
 
-  
-  
   <div>
     <div id="container_version" class="search_field_grid">
       <span class="field_label " id="field_label_version">
@@ -393,37 +390,37 @@ TUI_hide_default('information_query');
         </label>
       </span>
       <select name="rep_platform" id="rep_platform" multiple="multiple" size="7">
-          <option value="All" id="v1_rep_platform">All</option>
-          <option value="PC" id="v2_rep_platform">PC</option>
-          <option value="Macintosh" id="v3_rep_platform">Macintosh</option>
-          <option value="Other" id="v4_rep_platform">Other</option>
+        {% for hardware in hardwares %}
+          <option value="{{ hardware.value }}" id="v{{ hardware.id }}_rep_platform">{{ hardware.value }}</option>
+        {% endfor %}
       </select>
-    </div>               <div id="container_op_sys" class="search_field_grid">      <span class="field_label " id="field_label_op_sys">
+    </div>
 
-    <label for="op_sys" accesskey="o">
-
-  <a title="The operating system the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;." class="field_help_link" href="page.cgi?id=fields.html#op_sys">OS:</a>
-</label>
-</span>
+    <div id="container_op_sys" class="search_field_grid">
+      <span class="field_label " id="field_label_op_sys">
+        <label for="op_sys" accesskey="o">
+          <a title="The operating system the bug was observed on. Note: When searching, selecting the option &quot;All&quot; only finds bugs whose value for this field is literally the word &quot;All&quot;." class="field_help_link" href="page.cgi?id=fields.html#op_sys">OS:</a>
+        </label>
+      </span>
       <select name="op_sys" id="op_sys" multiple="multiple" size="7">
-          <option value="All" id="v1_op_sys">All</option>
-          <option value="Windows" id="v2_op_sys">Windows</option>
-          <option value="Mac OS" id="v3_op_sys">Mac OS</option>
-          <option value="Linux" id="v4_op_sys">Linux</option>
-          <option value="Other" id="v5_op_sys">Other</option>
+        {% for os in osses %}
+          <option value="{{ os.value }}" id="v{{ os.id }}_op_sys">{{ os.value }}</option>
+        {% endfor %}
       </select>
     </div>               
   </div>
 </div>
 
-  <div class="bz_section_title" id="people_filter">
-    <div id="people_query_controller" class="arrow">►</div>
-    <a href="javascript:TUI_toggle_class('people_query')">Search By People</a>
-    <span>Narrow results to a role (i.e. Assignee,
-      Reporter, Commenter,
-      etc.) a person has on a bug
-    </span>
-  </div>
+
+<div class="bz_section_title" id="people_filter">
+  <div id="people_query_controller" class="arrow">►</div>
+  <a href="javascript:TUI_toggle_class('people_query')">Search By People</a>
+  <span>Narrow results to a role (i.e. Assignee,
+    Reporter, Commenter,
+    etc.) a person has on a bug
+  </span>
+</div>
+
   <div id="people_filter_section" class="bz_search_section people_query bz_tui_hidden">
     <div class="search_email_fields">
       Any of:<div class="role_type">

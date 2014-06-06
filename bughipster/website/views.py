@@ -109,6 +109,8 @@ class ComplexQuery(generic.TemplateView):
         result['resolutions'] = list(models.Resolution.objects.all().order_by('sortkey', 'value').distinct())
         result['severities'] = list(models.Severity.objects.all().order_by('sortkey', 'value'))
         result['priorities'] = list(models.Priority.objects.all().order_by('sortkey', 'value'))
+        result['hardwares'] = list(models.Hardware.objects.all().order_by('sortkey', 'value'))
+        result['osses'] = list(models.OS.objects.all().order_by('sortkey', 'value'))
 
         # TODO: Check project's permission.
         result['projects'] = list(models.Product.objects.all().order_by('name'))
