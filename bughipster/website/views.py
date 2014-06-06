@@ -61,7 +61,6 @@ class ComplexQuery(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         result = super(ComplexQuery, self).get_context_data(**kwargs)
-        # result['form'] = project_forms.ComplexBugSearch()
 
         # TODO: Check project's permission.
         result['projects'] = list(models.Product.objects.all().order_by('name'))
