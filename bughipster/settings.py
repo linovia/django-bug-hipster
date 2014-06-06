@@ -146,7 +146,6 @@ INSTALLED_APPS = (
 
     # 3rd party applications
     'crispy_forms',
-    'debug_toolbar',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
