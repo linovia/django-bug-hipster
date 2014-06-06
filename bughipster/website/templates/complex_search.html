@@ -179,8 +179,9 @@ TUI_hide_default('information_query');
       if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
     });
 
-    showValueWhen('version', [2,3], 'product', 2, true);
-    showValueWhen('version', [1], 'product', 1, true);
+    {% for product_id, version_ids in per_project.versions.items %}
+    showValueWhen('version', {{ version_ids }}, 'product', {{ product_id }}, true);
+    {% endfor %}
 
     YAHOO.util.Event.onDOMReady(function() {
       var field = document.getElementById('product');
@@ -195,7 +196,8 @@ TUI_hide_default('information_query');
       if (field.selectedIndex != -1) bz_fireEvent(field, 'change');
     });
 
-    {% for product_id, component_ids in components_per_project.items %}showValueWhen('component', {{ component_ids }}, 'product', {{ product_id }}, true);
+    {% for product_id, component_ids in per_project.components.items %}
+    showValueWhen('component', {{ component_ids }}, 'product', {{ product_id }}, true);
     {% endfor %}
     // --></script>
 
@@ -235,12 +237,9 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="resolution" id="resolution" multiple="multiple" size="7">
-        <option value="---" id="v1_resolution" selected="selected">---</option>
-        <option value="FIXED" id="v2_resolution">FIXED</option>
-        <option value="INVALID" id="v3_resolution">INVALID</option>
-        <option value="WONTFIX" id="v4_resolution">WONTFIX</option>
-        <option value="DUPLICATE" id="v5_resolution">DUPLICATE</option>
-        <option value="WORKSFORME" id="v6_resolution">WORKSFORME</option>
+        {% for resolution in resolutions %}
+        <option value="{{ resolution.value|default:'---' }}" id="v{{ resolution.id }}_resolution" {% if foroop.first %} selected="selected"{% endif %}>{{ resolution.value|default:'---' }}</option>
+        {% endfor %}
     </select>
   </div>
 
@@ -313,22 +312,28 @@ TUI_hide_default('information_query');
 
   
   
-  <div><div id="container_version" class="search_field_grid">      <span class="field_label " id="field_label_version">
-
-    <label for="version">
-
-  <a title="The version field defines the version of the software the bug was found in." class="field_help_link" href="page.cgi?id=fields.html#version">Version:</a>
-</label>
-</span>
+  <div>
+    <div id="container_version" class="search_field_grid">
+      <span class="field_label " id="field_label_version">
+        <label for="version">
+          <a title="The version field defines the version of the software the bug was found in." class="field_help_link" href="page.cgi?id=fields.html#version">Version:</a>
+        </label>
+      </span>
       <select name="version" id="version" multiple="multiple" size="7">
-          <option value="unspecified" id="v2_version">unspecified</option>
-          <option value="V1" id="v3_version" class="">V1</option>
+          {% for version in versions %}
+          <option value="{{ version.value }}" id="v{{ version.id }}_version">{{ version.value }}</option>
+          {% endfor %}
       </select>
     </div>
 
       <script type="text/javascript">
-       bz_option_duplicates['version'] = {1:2}; bz_option_duplicate_count['version'] = {2:1 };
-      </script>                              <div id="container_target_milestone" class="search_field_grid">      <span class="field_label " id="field_label_target_milestone">
+       bz_option_duplicates['version'] = {1:2};
+       bz_option_duplicate_count['version'] = {2:1 };
+      </script>
+
+
+      <div id="container_target_milestone" class="search_field_grid">
+        <span class="field_label " id="field_label_target_milestone">
 
     <label for="target_milestone">
 
