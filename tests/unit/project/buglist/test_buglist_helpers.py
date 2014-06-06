@@ -30,5 +30,7 @@ def test_remove_duplicates():
     ]
     result = remove_duplicates(data)
     assert len(result) == 2
-    assert result[0] == {2: 3, 1: 3}
-    assert result[1] == {3: 2}
+    assert result == {
+        'duplicates': {2: 3, 1: 3},
+        'count': {3: 2},
+    }

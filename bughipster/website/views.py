@@ -92,7 +92,10 @@ def remove_duplicates(items):
             local_dict = dict((item, reference) for item in grouped_items)
             duplicates.update(local_dict)
             duplicates_count[reference] = len(local_dict)
-    return duplicates, duplicates_count
+    return {
+        'duplicates': duplicates,
+        'count': duplicates_count,
+    }
 
 
 class ComplexQuery(generic.TemplateView):
