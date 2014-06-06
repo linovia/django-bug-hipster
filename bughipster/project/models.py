@@ -170,6 +170,10 @@ class Component(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def value(self):
+        return self.name
+
 
 class ComponentCC(models.Model):
     id = db.MultiFieldPK("user", "component")
