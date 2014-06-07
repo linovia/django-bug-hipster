@@ -72,7 +72,7 @@ SUMMARY_TYPE = (
 )
 
 
-BUG_TYPE = (
+BUG_INCLUSION_TYPE = (
     ("anyexact", "only included in"),
     ("nowords", "excluded from"),
 )
@@ -115,6 +115,59 @@ BUG_TYPE = (
     ("changedby", "changed by"),
     ("matches", "matches"),
     ("notmatches", "does not match"),
+)
+
+CUSTOM_SEARCH = (
+    ("noop", "---"),
+    ("alias", "Alias"),
+    ("assigned_to", "Assignee"),
+    ("attachments.submitter", "Attachment creator"),
+    ("attach_data.thedata", "Attachment data"),
+    ("attachments.description", "Attachment description"),
+    ("attachments.filename", "Attachment filename"),
+    ("attachments.isobsolete", "Attachment is obsolete"),
+    ("attachments.ispatch", "Attachment is patch"),
+    ("attachments.isprivate", "Attachment is private"),
+    ("attachments.mimetype", "Attachment mime type"),
+    ("blocked", "Blocks"),
+    ("bug_id", "Bug ID"),
+    ("cc", "CC"),
+    ("cclist_accessible", "CC list accessible"),
+    ("classification", "Classification"),
+    ("longdesc", "Comment"),
+    ("longdescs.isprivate", "Comment is private"),
+    ("commenter", "Commenter"),
+    ("component", "Component"),
+    ("content", "Content"),
+    ("creation_ts", "Creation date"),
+    ("days_elapsed", "Days since bug changed"),
+    ("dependson", "Depends on"),
+    ("everconfirmed", "Ever confirmed"),
+    ("requestees.login_name", "Flag Requestee"),
+    ("setters.login_name", "Flag Setter"),
+    ("flagtypes.name", "Flags"),
+    ("bug_group", "Group"),
+    ("keywords", "Keywords"),
+    ("delta_ts", "Changed"),
+    ("longdescs.count", "Number of Comments"),
+    ("op_sys", "OS"),
+    ("rep_platform", "Hardware"),
+    ("priority", "Priority"),
+    ("product", "Product"),
+    ("qa_contact", "QA Contact"),
+    ("reporter", "Reporter"),
+    ("reporter_accessible", "Reporter accessible"),
+    ("resolution", "Resolution"),
+    ("see_also", "See Also"),
+    ("bug_severity", "Severity"),
+    ("bug_status", "Status"),
+    ("status_whiteboard", "Whiteboard"),
+    ("short_desc", "Summary"),
+    ("tag", "Tags"),
+    ("target_milestone", "Target Milestone"),
+    ("owner_idle_time", "Time Since Assignee Touched"),
+    ("bug_file_loc", "URL"),
+    ("version", "Version"),
 )
 
 
@@ -189,7 +242,8 @@ class ComplexQuery(generic.TemplateView):
         result['SUMMARY_TYPE'] = SUMMARY_TYPE
         result['BUG_TYPE'] = BUG_TYPE
         result['EMAIL_TYPE'] = EMAIL_TYPE
-        result['SEARCH_TYPE'] = SEARCH_TYPE
+        result['BUG_INCLUSION_TYPE'] = BUG_INCLUSION_TYPE
+        result['CUSTOM_SEARCH'] = CUSTOM_SEARCH
 
         # Filter the various values based on authorized projects.
         return result

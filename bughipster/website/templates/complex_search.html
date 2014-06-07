@@ -296,7 +296,7 @@ TUI_hide_default('information_query');
     </div>
     should be 
     <select name="bug_id_type" id="bug_id_type">
-      {% for key, value in BUG_TYPE %}
+      {% for key, value in BUG_INCLUSION_TYPE %}
       <option value="{{ key }}">{{ value }}</option>
       {% endfor %}
     </select> the results
@@ -743,106 +743,9 @@ March 2014
       </span>
 
       <select name="f1" title="Field" id="f1" onchange="fix_query_string(this)" class="custom_search_form_field">
-          <option value="noop" selected="selected">---
-          </option>
-          <option value="alias">Alias
-          </option>
-          <option value="assigned_to">Assignee
-          </option>
-          <option value="attachments.submitter">Attachment creator
-          </option>
-          <option value="attach_data.thedata">Attachment data
-          </option>
-          <option value="attachments.description">Attachment description
-          </option>
-          <option value="attachments.filename">Attachment filename
-          </option>
-          <option value="attachments.isobsolete">Attachment is obsolete
-          </option>
-          <option value="attachments.ispatch">Attachment is patch
-          </option>
-          <option value="attachments.isprivate">Attachment is private
-          </option>
-          <option value="attachments.mimetype">Attachment mime type
-          </option>
-          <option value="blocked">Blocks
-          </option>
-          <option value="bug_id">Bug ID
-          </option>
-          <option value="cc">CC
-          </option>
-          <option value="cclist_accessible">CC list accessible
-          </option>
-          <option value="classification">Classification
-          </option>
-          <option value="longdesc">Comment
-          </option>
-          <option value="longdescs.isprivate">Comment is private
-          </option>
-          <option value="commenter">Commenter
-          </option>
-          <option value="component">Component
-          </option>
-          <option value="content">Content
-          </option>
-          <option value="creation_ts">Creation date
-          </option>
-          <option value="days_elapsed">Days since bug changed
-          </option>
-          <option value="dependson">Depends on
-          </option>
-          <option value="everconfirmed">Ever confirmed
-          </option>
-          <option value="requestees.login_name">Flag Requestee
-          </option>
-          <option value="setters.login_name">Flag Setter
-          </option>
-          <option value="flagtypes.name">Flags
-          </option>
-          <option value="bug_group">Group
-          </option>
-          <option value="keywords">Keywords
-          </option>
-          <option value="delta_ts">Changed
-          </option>
-          <option value="longdescs.count">Number of Comments
-          </option>
-          <option value="op_sys">OS
-          </option>
-          <option value="rep_platform">Hardware
-          </option>
-          <option value="priority">Priority
-          </option>
-          <option value="product">Product
-          </option>
-          <option value="qa_contact">QA Contact
-          </option>
-          <option value="reporter">Reporter
-          </option>
-          <option value="reporter_accessible">Reporter accessible
-          </option>
-          <option value="resolution">Resolution
-          </option>
-          <option value="see_also">See Also
-          </option>
-          <option value="bug_severity">Severity
-          </option>
-          <option value="bug_status">Status
-          </option>
-          <option value="status_whiteboard">Whiteboard
-          </option>
-          <option value="short_desc">Summary
-          </option>
-          <option value="tag">Tags
-          </option>
-          <option value="target_milestone">Target Milestone
-          </option>
-          <option value="owner_idle_time">Time Since Assignee Touched
-          </option>
-          <option value="bug_file_loc">URL
-          </option>
-          <option value="version">Version
-          </option>
+          {% for key, value in CUSTOM_SEARCH %}
+          <option value="{{ key }}">{{ value }}</option>
+          {% endfor %}
       </select>
     <select name="o1" title="Search type" class="custom_search_form_field">
       {% for key, value in BUG_TYPE %}
