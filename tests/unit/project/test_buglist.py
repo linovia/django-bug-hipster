@@ -111,7 +111,7 @@ def test_filter_on_bug_status():
 
 
 @pytest.mark.django_db
-def test_filter_on_project():
+def test_filter_on_empty_project():
     # Status creation
     models.Status.objects.create(value='NEW', is_open=True)
 
