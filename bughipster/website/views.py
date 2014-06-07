@@ -89,32 +89,32 @@ EMAIL_TYPE = (
 
 
 BUG_TYPE = (
-    <option value="noop">---</option>
-    <option value="equals">is equal to</option>
-    <option value="notequals">is not equal to</option>
-    <option value="anyexact">is equal to any of the strings</option>
-    <option value="substring">contains the string</option>
-    <option value="casesubstring">contains the string (exact case)</option>
-    <option value="notsubstring">does not contain the string</option>
-    <option value="anywordssubstr">contains any of the strings</option>
-    <option value="allwordssubstr">contains all of the strings</option>
-    <option value="nowordssubstr">contains none of the strings</option>
-    <option value="regexp">matches regular expression</option>
-    <option value="notregexp">does not match regular expression</option>
-    <option value="lessthan">is less than</option>
-    <option value="lessthaneq">is less than or equal to</option>
-    <option value="greaterthan">is greater than</option>
-    <option value="greaterthaneq">is greater than or equal to</option>
-    <option value="anywords">contains any of the words</option>
-    <option value="allwords">contains all of the words</option>
-    <option value="nowords">contains none of the words</option>
-    <option value="changedbefore">changed before</option>
-    <option value="changedafter">changed after</option>
-    <option value="changedfrom">changed from</option>
-    <option value="changedto">changed to</option>
-    <option value="changedby">changed by</option>
-    <option value="matches">matches</option>
-    <option value="notmatches">does not match</option>
+    ("noop", "---"),
+    ("equals", "is equal to"),
+    ("notequals", "is not equal to"),
+    ("anyexact", "is equal to any of the strings"),
+    ("substring", "contains the string"),
+    ("casesubstring", "contains the string (exact case)"),
+    ("notsubstring", "does not contain the string"),
+    ("anywordssubstr", "contains any of the strings"),
+    ("allwordssubstr", "contains all of the strings"),
+    ("nowordssubstr", "contains none of the strings"),
+    ("regexp", "matches regular expression"),
+    ("notregexp", "does not match regular expression"),
+    ("lessthan", "is less than"),
+    ("lessthaneq", "is less than or equal to"),
+    ("greaterthan", "is greater than"),
+    ("greaterthaneq", "is greater than or equal to"),
+    ("anywords", "contains any of the words"),
+    ("allwords", "contains all of the words"),
+    ("nowords", "contains none of the words"),
+    ("changedbefore", "changed before"),
+    ("changedafter", "changed after"),
+    ("changedfrom", "changed from"),
+    ("changedto", "changed to"),
+    ("changedby", "changed by"),
+    ("matches", "matches"),
+    ("notmatches", "does not match"),
 )
 
 
