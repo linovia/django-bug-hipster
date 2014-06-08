@@ -9,10 +9,11 @@ Bugzilla rewritten with Django.
 Disclaimer
 ----------
 
-This project's goal is to fully emulate Bugzilla.
+This project's goal is to fully emulate Bugzilla. This means the user interface
+will be the same but the arguments and overall behaviour.
 
-Please do NOT USE this project as good pratices for what is usually done
-with Django. This is totally out of the prupose here.
+Please do NOT USE this project as a reference for good pratices for what is
+usually done with Django. This is NOT the case and totally out of prupose here.
 
 
 Installation
