@@ -133,3 +133,28 @@ def test_filter_on_empty_project():
     response = views.BugList.as_view()(request)
     bug_list = response.context_data['bug_list']
     assert len(bug_list) == 2
+
+
+@pytest.mark.django_db
+def test_filter_on_non_existing_project():
+    # Status creation
+    models.Status.objects.create(value='NEW', is_open=True)
+
+    # Create an opened and a closed bug
+    bug1 = factories.Bug.create()
+    bug1.status = 'NEW'
+    bug1.save()
+    bug2 = factories.Bug.create(
+        product=bug1.product,
+        assignee=bug1.assignee,
+        reporter=bug1.reporter)
+    bug2.status = 'NEW'
+    bug2.save()
+
+    rf = RequestFactory()
+
+    # Test with empty product list
+    request = rf.get('buglist.cgi?product=azerty')
+    response = views.BugList.as_view()(request)
+    bug_list = response.context_data['bug_list']
+    assert len(bug_list) == 0
