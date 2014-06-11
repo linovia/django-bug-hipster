@@ -111,6 +111,7 @@ function remove_token() {
 
 <form method="post" action="{% url 'front:list-bug' %}" name="queryform" id="queryform" onsubmit="remove_token()">
 
+  {% csrf_token %}
   <input type="hidden" id="no_redirect" name="no_redirect" value="1">
   <script type="text/javascript">
 if (history && history.replaceState) {
@@ -140,7 +141,7 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="short_desc_type" title="Search type" class="">
-      {% for key, label in SEARCH_TYPE %}
+      {% for key, label in SUMMARY_TYPE %}
       <option value="{{ key }}">{{ label }}</option>
       {% endfor %}
     </select>    
@@ -267,7 +268,7 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="longdesc_type" title="Search type" class="">
-      {% for key, label in SEARCH_TYPE %}
+      {% for key, label in SUMMARY_TYPE %}
       <option value="{{ key }}">{{ label }}</option>
       {% endfor %}
     </select>    
@@ -281,7 +282,7 @@ TUI_hide_default('information_query');
       </label>
     </span>
     <select name="bug_file_loc_type" title="Search type" class="">
-      {% for key, label in SEARCH_TYPE %}
+      {% for key, label in SUMMARY_TYPE %}
       <option value="{{ key }}">{{ label }}</option>
       {% endfor %}
     </select>    
