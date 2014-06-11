@@ -72,25 +72,42 @@ class SimpleQuery(filters.FilterSet):
         ]
 
 
-class ComplexQuery(filters.FilterSet):
+class FullQuery(filters.FilterSet):
     product = BzModelMultipleChoiceFilter(
         queryset=models.Product.objects.all(),
         to_field_name='name', widget=BugzillaSelectMultiple, required=False)
     component = BzModelMultipleChoiceFilter(
         queryset=models.Component.objects.all(),
-        to_field_name='name')
-    bug_status = BzModelMultipleChoiceFilter(
-        queryset=models.Status.objects.all(),
-        to_field_name='value')
+        to_field_name='name', required=False)
+    bug_status = StatusFilter(name='status')
     resolution = BzModelMultipleChoiceFilter(
         queryset=models.Resolution.objects.all(),
-        to_field_name='value')
+        to_field_name='value', required=False)
+
+    version = BzModelMultipleChoiceFilter(
+        queryset=models.Version.objects.all(),
+        to_field_name='value', required=False)
+
+    target_milestone = BzModelMultipleChoiceFilter(
+        queryset=models.Milestone.objects.all(),
+        to_field_name='value', required=False)
+    severity = BzModelMultipleChoiceFilter(
+        queryset=models.Severity.objects.all(),
+        to_field_name='value', required=False)
+    priority = BzModelMultipleChoiceFilter(
+        queryset=models.Priority.objects.all(),
+        to_field_name='value', required=False)
+    hardware = BzModelMultipleChoiceFilter(
+        queryset=models.Hardware.objects.all(),
+        to_field_name='value', required=False)
+    os = BzModelMultipleChoiceFilter(
+        queryset=models.OS.objects.all(),
+        to_field_name='value', required=False)
+
 
     class Meta:
         model = models.Bug
         fields = [
-            'product', 'component', 'bug_status', 'resolution'
+            'product', 'component', 'bug_status', 'resolution',
+            'version', 'target_milestone',
         ]
-
-class FullQuery(ComplexQuery):
-    bug_status = StatusFilter(name='status')

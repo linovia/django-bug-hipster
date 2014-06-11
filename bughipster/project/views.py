@@ -57,7 +57,23 @@ def bug_creation(request, *args, **kwargs):
     return CreateBug.as_view()(request, *args, **kwargs)
 
 
-class BugList(FilterView):
+class BugList(generic.TemplateView):
     template_name = 'bug_list.html'
-    model = models.Bug
-    filterset_class = filters.FullQuery
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def filter(self):
+        self.filters = {}
+        qs = models.Bug.objects.all()
+        f = filters.FullQuery(self.request.POST or self.request.GET, queryset=qs)
+        f.form.is_valid()
+        return f
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(BugList, self).get_context_data(**kwargs)
+        f = self.filter()
+        kwargs['bug_list'] = f.qs
+        kwargs['filter'] = f
+        kwargs['filter_args'] = {k: v for k, v in f.form.cleaned_data.items() if v}
+        return kwargs
