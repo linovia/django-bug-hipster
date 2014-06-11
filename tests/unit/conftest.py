@@ -18,4 +18,5 @@ def pytest_configure(config):
             SITE_ID=1,
             TEMPLATE_DEBUG=False,
             ALLOWED_HOSTS=['*'],
+            STATIC_URL='/static/',
         )
