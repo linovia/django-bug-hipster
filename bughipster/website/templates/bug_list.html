@@ -107,12 +107,14 @@
 </script>
 
 <ul class="search_description">
+  {% for key, values in filter_args.items %}
   <li>
-    <strong>Status:</strong>
-      UNCONFIRMED,
-      CONFIRMED,
-      IN_PROGRESS
+    <strong>{{ key }}:</strong>
+      {% for value in values %}
+      {{ value }}{% if not forloop.last %},{% endif %}
+      {% endfor %}
   </li>
+  {% endfor %}
 </ul>
 
 <hr>
