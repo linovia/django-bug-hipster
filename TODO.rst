@@ -3,7 +3,7 @@ TODO
 
 global
 ------
-- What use it the no_redirect in the urls ?
+- What use is the no_redirect in the urls ?
 
 
 base.html
