@@ -8,57 +8,13 @@ bughipster.project.models
 from __future__ import print_function, division
 from __future__ import absolute_import, unicode_literals
 
-import inspect
-import new
- 
+
 from django.utils.encoding import python_2_unicode_compatible
-from django.db.models import query
 from django.db import models
 
 from compositekey import db
 
 
- 
-class ManagerQuerySet(query.QuerySet):
-    """
-    A base class for querysets that support being converted to managers
-    (for use as a model's `objects` manager) via `ManagerQuerySet.as_manager`.
-    """
-     
-    def as_manager(self, base=models.Manager):
-        """
-        Creates a manager from the current queryset by copying any methods not
-        defined in the queryset class's parent classes (`query.QuerySet` and
-        `ManagerQuerySet`).
-        """
-        cls = self.__class__ # Nested class.
-         
-        class QuerySetManager(base):
-            use_for_related_fields = True
-             
-            def get_query_set(self):
-                return cls(self.model)
-         
-        base_classes = [ManagerQuerySet, query.QuerySet]
-        base_methods = [
-            inspect.getmembers(base, inspect.ismethod) for base in base_classes
-        ]
-         
-        def in_base_class(method_name):
-            for methods in base_methods:
-                for (name, _) in methods:
-                    if name == method_name:
-                        return True
-            return False
-         
-        for (method_name, method) in inspect.getmembers(self, inspect.ismethod):
-             if not in_base_class(method_name):
-                 new_method = new.instancemethod(
-                     method.im_func, None, QuerySetManager
-                 )
-                 setattr(QuerySetManager, method_name, new_method)
-     
-        return QuerySetManager()
 
 # TODO:
 # Manage the field type #7
@@ -101,8 +57,10 @@ class FieldDef(models.Model):
     obsolete = models.SmallIntegerField(default=0)
     enter_bug = models.SmallIntegerField(default=0)
     buglist = models.SmallIntegerField(default=0)
-    visibility_field = models.ForeignKey('self', blank=True, null=True, related_name='+')
-    value_field = models.ForeignKey('self', blank=True, null=True, related_name='+')
+    visibility_field = models.ForeignKey(
+        'self', blank=True, null=True, related_name='+')
+    value_field = models.ForeignKey(
+        'self', blank=True, null=True, related_name='+')
     reverse_desc = models.CharField(max_length=255, blank=True, null=True)
     mandatory = models.SmallIntegerField(default=0, db_column='is_mandatory')
     numeric = models.SmallIntegerField(default=0, db_column='is_numeric')
@@ -151,14 +109,16 @@ class Component(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, db_index=True)
     product = models.ForeignKey('project.Product')
-    owner = models.ForeignKey('user.Profile', db_index=False,
+    owner = models.ForeignKey(
+        'user.Profile', db_index=False,
         db_column='initialowner', related_name='owned_components')
-    qa = models.ForeignKey('user.Profile', null=True, blank=True,
+    qa = models.ForeignKey(
+        'user.Profile', null=True, blank=True,
         db_column='initialqacontact', related_name='watched_compononets')
     description = models.TextField(default='')
     active = models.IntegerField(db_column='isactive', default=True)
-    cc = models.ManyToManyField('user.Profile',
-        related_name='components', through='ComponentCC',
+    cc = models.ManyToManyField(
+        'user.Profile', related_name='components', through='ComponentCC',
         null=True, blank=True)
 
     class Meta:
@@ -175,8 +135,10 @@ class Component(models.Model):
 
 class ComponentCC(models.Model):
     id = db.MultiFieldPK("user", "component")
-    user = models.ForeignKey('user.Profile', db_column='user_id', related_name='+')
-    component = models.ForeignKey(Component, db_column='component_id', related_name='+')
+    user = models.ForeignKey(
+        'user.Profile', db_column='user_id', related_name='+')
+    component = models.ForeignKey(
+        Component, db_column='component_id', related_name='+')
 
     class Meta:
         db_table = 'component_cc'
@@ -274,7 +236,7 @@ class Hardware(BaseBugField):
         return self.value
 
 
-class BugQuerySet(ManagerQuerySet):
+class BugQuerySet(models.QuerySet):
     def opened(self):
         opened_status = Status.objects.filter(is_open=1)
         return self.filter(status__in=[s.value for s in opened_status])
@@ -297,51 +259,57 @@ class BaseBug(models.Model):
         return '#%s' % self.id
 
     id = models.AutoField(primary_key=True, db_column='bug_id')
-    alias = models.CharField(max_length=20, db_index=True, unique=True, null=True, blank=True)
+    alias = models.CharField(
+        max_length=20, db_index=True, unique=True, null=True, blank=True)
     title = models.CharField(max_length=255, db_column='short_desc')
     assignee = models.ForeignKey('user.Profile', db_column='assigned_to')
     product = models.ForeignKey('project.Product', default=None, db_index=True)
 
-    component = models.ForeignKey('project.Component',
+    component = models.ForeignKey(
+        'project.Component',
         blank=True, null=True, default=None)
 
     version = models.CharField(max_length=64, default='', db_index=True)
-    milestone = models.CharField(max_length=64, db_index=True,
+    milestone = models.CharField(
+        max_length=64, db_index=True,
         db_column='target_milestone', default='---')
 
     bug_file_loc = models.TextField(default='', blank=True)
-    severity = models.CharField(max_length=64,
-        db_column='bug_severity', db_index=True)
-    status = models.CharField(max_length=64,
-        db_column='bug_status', db_index=True)
-    resolution = models.CharField(max_length=64, default='', blank=True, db_index=True)
+    severity = models.CharField(
+        max_length=64, db_column='bug_severity', db_index=True)
+    status = models.CharField(
+        max_length=64, db_column='bug_status', db_index=True)
+    resolution = models.CharField(
+        max_length=64, default='', blank=True, db_index=True)
     priority = models.CharField(max_length=64, db_index=True)
 
-    dependson = models.ManyToManyField('self',
-        related_name='blocked', through='BugDependencies',
+    dependson = models.ManyToManyField(
+        'self', related_name='blocked', through='BugDependencies',
         null=True, blank=True, symmetrical=False)
 
-    cc = models.ManyToManyField('user.Profile',
-        related_name='cc_bugs', through='BugCC',
+    cc = models.ManyToManyField(
+        'user.Profile', related_name='cc_bugs', through='BugCC',
         null=True, blank=True)
     cclist_accessible = models.SmallIntegerField(default=1)
 
-    creation_ts = models.DateTimeField(db_index=True, null=True, auto_now_add=True)
+    creation_ts = models.DateTimeField(
+        db_index=True, null=True, auto_now_add=True)
     delta_ts = models.DateTimeField(auto_now=True, db_index=True)
     lastdiffed = models.DateTimeField(null=True, blank=True, default=None)
     deadline = models.DateTimeField(null=True)
 
-    estimated_time = models.DecimalField(max_digits=5,
-        decimal_places=2, default='0')
-    remaining_time = models.DecimalField(max_digits=5,
-        decimal_places=2, default='0')
+    estimated_time = models.DecimalField(
+        max_digits=5, decimal_places=2, default='0')
+    remaining_time = models.DecimalField(
+        max_digits=5, decimal_places=2, default='0')
 
     everconfirmed = models.SmallIntegerField(default=0)
 
     os = models.CharField(max_length=64, db_index=True, db_column='op_sys')
     domain = models.CharField(max_length=64, db_column='rep_platform')
 
-    reporter = models.ForeignKey('user.Profile', db_column='reporter',
+    reporter = models.ForeignKey(
+        'user.Profile', db_column='reporter',
         related_name='created_bugs')
 
     reporter_accessible = models.SmallIntegerField(default=1)
@@ -355,7 +323,7 @@ def create_bug_model(class_name=None, options=None):
     """
     class Meta:
         db_table = 'bugs'
-        app_label = 'project'        
+        app_label = 'project'
 
     # Set up a dictionary to simulate declarations within a class
     attrs = {'__module__': 'project', 'Meta': Meta}
@@ -412,12 +380,15 @@ class BugCC(models.Model):
 @python_2_unicode_compatible
 class Comment(models.Model):
     id = models.AutoField(primary_key=True, db_column='comment_id')
-    bug = models.ForeignKey('project.Bug', related_name='comments',
+    bug = models.ForeignKey(
+        'project.Bug', related_name='comments',
         to_field='id', db_column='bug_id', db_index=True)
-    who = models.ForeignKey('user.Profile',
+    who = models.ForeignKey(
+        'user.Profile',
         to_field='id', db_column='who', db_index=True)
     bug_when = models.DateTimeField(auto_now_add=True, db_index=True)
-    work_time = models.DecimalField(default='0.00',
+    work_time = models.DecimalField(
+        default='0.00',
         max_digits=5, decimal_places=2)
     content = models.TextField(db_column='thetext')
     private = models.SmallIntegerField(default=0, db_column='isprivate')
