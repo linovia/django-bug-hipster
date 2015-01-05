@@ -11,19 +11,22 @@ from bughipster.user.hashers import BugzillaHasher
 
 class HasherTest(TestCase):
     def test_encode(self):
-        encoded = "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}"
+        encoded = (
+            "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}")
         hasher = BugzillaHasher()
         result = hasher.encode('pipoti', "c56mZDsJ")
-        assert result == encoded, result
+        assert result == encoded
 
     def test_verify(self):
-        encoded = "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}"
+        encoded = (
+            "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}")
         hasher = BugzillaHasher()
         assert hasher.verify('pipoti', encoded)
         assert not hasher.verify('pipot', encoded)
 
     def test_safe_summary(self):
-        encoded = "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}"
+        encoded = (
+            "c56mZDsJ3qtdtvemXXw8v4P8mKTKetIDNtKneGM2q9Xek9mfWA0{SHA-256}")
         hasher = BugzillaHasher()
         assert hasher.safe_summary(encoded) == {
             'algorithm': 'SHA-256',
