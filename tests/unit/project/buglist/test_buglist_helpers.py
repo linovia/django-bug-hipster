@@ -9,7 +9,6 @@ bughipster.website.views
 from bughipster.website.views import item_per_project, remove_duplicates
 
 
-
 class Item(object):
     def __init__(self, id, product_id, value=''):
         self.id = id

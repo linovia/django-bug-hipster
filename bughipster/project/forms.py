@@ -16,16 +16,18 @@ from . import models
 # Bug form for creating new bugs
 #
 class Bug(forms.ModelForm):
-    version = forms.ModelChoiceField(queryset=models.Version.objects, empty_label=None)
-    component = forms.ModelChoiceField(queryset=models.Component.objects, empty_label=None)
+    version = forms.ModelChoiceField(
+        queryset=models.Version.objects, empty_label=None)
+    component = forms.ModelChoiceField(
+        queryset=models.Component.objects, empty_label=None)
 
     class Meta:
         model = models.Bug
         fields = (
             'component', 'version', 'severity', 'os', 'priority',
             'status', 'assignee', 'cc', 'deadline', 'alias',
-            # 'url', 'summary', 'estimate', 
-            # 'blocks', 'description', 'dependson','hardware', 
+            # 'url', 'summary', 'estimate',
+            # 'blocks', 'description', 'dependson','hardware',
         )
 
     def __init__(self, product_id, *args, **kwargs):

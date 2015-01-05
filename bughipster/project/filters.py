@@ -60,7 +60,8 @@ class SimpleQuery(filters.FilterSet):
         ('__closed__', _('Closed')),
         ('__all__', _('All')),
     ), name='status')
-    product = filters.ModelChoiceFilter(label=_('Product'),
+    product = filters.ModelChoiceFilter(
+        label=_('Product'),
         queryset=models.Product.objects.all(),
         to_field_name='name', empty_label=_('All'))
     content = filters.CharFilter(label=_('Words'))
@@ -103,7 +104,6 @@ class FullQuery(filters.FilterSet):
     os = BzModelMultipleChoiceFilter(
         queryset=models.OS.objects.all(),
         to_field_name='value', required=False)
-
 
     class Meta:
         model = models.Bug

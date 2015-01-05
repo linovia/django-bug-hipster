@@ -30,7 +30,8 @@ class BzChoiceFieldMixin(object):
         return super(BzChoiceFieldMixin, self).clean(value)
 
 
-class BzModelMultipleChoiceField(BzChoiceFieldMixin,
+class BzModelMultipleChoiceField(
+        BzChoiceFieldMixin,
         forms.models.ModelMultipleChoiceField):
     """
     ModelMultipleChoiceField that allows [''] as empty value
