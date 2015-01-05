@@ -119,6 +119,7 @@
 
 <hr>
 
+{% if bug_list %}
 <table class="bz_buglist" cellspacing="0" cellpadding="4" width="100%">
   <tbody>
     <tr class="bz_buglist_header bz_first_buglist_header">
@@ -176,6 +177,19 @@
 <span class="bz_result_count">
       One bug found.
 </span>
+
+{% else %}
+<span class="bz_result_count">
+  <span class="zero_results">Zarro Boogs found.</span>
+</span>
+
+<ul class="zero_result_links">
+  <li><a href="{% url 'front:create-bug' %}">File a new bug</a></li>
+  <li><a href="{% url 'front:view-query' %}?bug_status=__open__&amp;list_id=34&amp;query_format=specific">Edit this search</a></li>
+  <li><a href="{% url 'front:view-query' %}">Start a new search</a></li>
+</ul>
+{% endif %}
+
 <br>
 
 <table>
