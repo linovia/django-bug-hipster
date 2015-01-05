@@ -78,7 +78,7 @@ class BugzillaHasher(hashers.BasePasswordHasher):
         assert salt and len(salt) == SALT_SIZE
         hashed = base64.b64encode(
             hashlib.sha256(
-                force_bytes(password + salt)).digest())
+                force_bytes(password + salt)).digest()).decode('ascii')
         if hashed[-1] == '=':
             hashed = hashed[:-1]
         return '%s%s{%s}' % (salt, hashed, self.algorithm)
