@@ -1,3 +1,4 @@
+import django
 from django.conf import settings
 from bughipster import settings as base_settings
 
@@ -20,3 +21,4 @@ def pytest_configure(config):
             ALLOWED_HOSTS=['*'],
             STATIC_URL='/static/',
         )
+        django.setup()
