@@ -1,8 +1,7 @@
 django-bug-hipster
 ==================
 
-https://travis-ci.org/linovia/django-bug-hipster.svg?branch=master
-
+[![Build Status](https://travis-ci.org/linovia/django-bug-hipster.svg?branch=master)](https://travis-ci.org/linovia/django-bug-hipster)
 Bugzilla rewritten with Django.
 
 
