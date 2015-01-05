@@ -6,12 +6,12 @@ bughipster.website.urls
 :license: BSD, see LICENSE for more details.
 """
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from . import views
 from bughipster.project import views as project_views
 
 
-front_urls = patterns('',
+front_urls = [
     url(r'^$', views.Home.as_view(), name='home'),
     url(r'^index\.cgi$', views.Home.as_view(), name='home'),
     url(r'^enter_bug\.cgi$', project_views.bug_creation, name='create-bug'),
@@ -25,13 +25,13 @@ front_urls = patterns('',
     url(r'^report\.cgi$', views.ToDo.as_view(), name='view-report'),
     url(r'^search_plugin\.cgi$', views.ToDo.as_view(), name='search-plugin'),
     url(r'^show_bug\.cgi$', views.ToDo.as_view(), name='bug-details'),
-)
+]
 
-admin_urls = patterns('',
+admin_urls = [
     url(r'^admin\.cgi$', views.ToDo.as_view(), name='index'),
-)
+]
 
-user_urls = patterns('',
+user_urls = [
     url(r'^createaccount\.cgi$', views.CreateAccount.as_view(), name='create-account'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
@@ -39,10 +39,10 @@ user_urls = patterns('',
     # TODO:
     url(r'^userprefs\.cgi$', views.ToDo.as_view(), name='prefs'),
     url(r'^forgot_password/$', views.ToDo.as_view(), name='forgot-password'),
-)
+]
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'', include(front_urls, namespace='front')),
     url(r'', include(user_urls, namespace='user')),
     url(r'', include(admin_urls, namespace='back')),
-)
+]
