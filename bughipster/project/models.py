@@ -12,8 +12,7 @@ from __future__ import absolute_import, unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 
-from compositekey import db
-
+from bughipster.utils.fields import MultiFieldPK
 
 
 # TODO:
@@ -134,7 +133,7 @@ class Component(models.Model):
 
 
 class ComponentCC(models.Model):
-    id = db.MultiFieldPK("user", "component")
+    id = MultiFieldPK(keys=("user", "component"))
     user = models.ForeignKey(
         'user.Profile', db_column='user_id', related_name='+')
     component = models.ForeignKey(
@@ -351,7 +350,7 @@ Bug = create_bug_model()
 
 @python_2_unicode_compatible
 class BugDependencies(models.Model):
-    id = db.MultiFieldPK("blocked", "dependson")
+    id = MultiFieldPK(keys=("blocked", "dependson"))
     blocked = models.ForeignKey(Bug, db_column='blocked', related_name='+')
     dependson = models.ForeignKey(Bug, db_column='dependson', related_name='+')
 
@@ -365,7 +364,7 @@ class BugDependencies(models.Model):
 
 @python_2_unicode_compatible
 class BugCC(models.Model):
-    id = db.MultiFieldPK("bug", "who")
+    id = MultiFieldPK(keys=("bug", "who"))
     bug = models.ForeignKey(Bug, db_column='bug_id', related_name='+')
     who = models.ForeignKey('user.Profile', db_column='who', related_name='+')
 
