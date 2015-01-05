@@ -12,9 +12,13 @@ from setuptools.command.test import test as TestCommand
 import sys
 
 
-with open('requirements.txt') as f:
-    # TODO: skips comments
-    install_requires = f.read()
+install_requires = [
+    'Django<1.8',
+    'psycopg2',
+    # 'logan==0.5.9.1',
+    'django-crispy-forms==1.4.0',
+    'django-filter==0.9.1',
+]
 
 
 tests_require = [

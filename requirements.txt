@@ -1,6 +1,0 @@
-Django==1.5.6
-psycopg2
-logan==0.5.9.1
-https://github.com/simone/django-compositekey/archive/master.zip
-django-crispy-forms==1.4.0
-django-filter==0.7
