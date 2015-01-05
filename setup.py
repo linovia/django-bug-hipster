@@ -25,6 +25,7 @@ tests_require = [
     'pytest',
     'pytest-cov>=1.4',
     'pytest-django',
+    'factory_boy',
 ]
 
 
