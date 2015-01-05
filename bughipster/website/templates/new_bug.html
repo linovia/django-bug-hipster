@@ -12,16 +12,11 @@
 <link type="text/css" rel="stylesheet" href="{% static 'skins/standard/enter_bug.css' %}"></link>
 
 <!--
-
 [if lte IE 7]>
-      
-
-
   <link href="skins/standa…
-
 -->
 
-<link title="Dusk" type="text/css" rel="stylesheet" href="{% static 'skins/contrib/Dusk/global.css' %}"></link>
+<link type="text/css" rel="stylesheet" href="{% static 'skins/contrib/Dusk/global.css' %}" title="Dusk"></link>
 {% endblock css %}
 
 {% block js %}
@@ -199,7 +194,7 @@ TUI_hide_default('attachment_text_field');
   <input type="hidden" name="product" value="TestProduct">
   <input type="hidden" name="token" value="mKUnDUsqwP">
 
-  {% crispy form %}
+  <hr>
 
   <table>
     <tbody>
@@ -256,11 +251,13 @@ TUI_hide_default('attachment_text_field');
             </label>
           </th>
           <td id="field_container_component">
+            <!--
             <select name="component" id="component" onchange="set_assign_to();"
                     size="7" aria-required="true" class="required">
               <option value="TestComponent" id="v1_component" selected="selected">TestComponent</option>
             </select>
-
+            -->
+            {{ form.component|as_crispy_field:"bootstrap" }}
             <script type="text/javascript">
              <!--
                
