@@ -39,10 +39,7 @@ def identify_hasher(encoded):
     get_hasher() to return hasher. Raises ValueError if
     algorithm cannot be identified, or if hasher is not loaded.
     """
-    if not hashers.HASHERS:
-        hashers.load_hashers()
-
-    for hasher in hashers.HASHERS.values():
+    for hasher in hashers.get_hashers():
         if hasattr(hasher, 'can_handle') and \
                 hasher.can_handle(encoded):
             return hasher
