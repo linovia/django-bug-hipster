@@ -11,6 +11,7 @@ from django.views import generic
 from django.core.urlresolvers import reverse
 
 from bughipster.project import models, filters
+from .login import LoginMixin
 
 
 class ToDo(generic.TemplateView):
@@ -27,14 +28,14 @@ class Error(generic.TemplateView):
         return result
 
 
-class Home(generic.TemplateView):
+class Home(LoginMixin, generic.TemplateView):
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
         if 'logout' in self.request.GET:
             return http.HttpResponseRedirect(reverse('logout'))
-        if self.request.GET:
-            raise ValueError(self.request.GET)
+        # if self.request.GET:
+        #     raise ValueError(self.request.GET)
         return super(Home, self).get(request, *args, **kwargs)
 
 

@@ -3,7 +3,7 @@
                       "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
-    <title>Welcome to Bugzilla</title>
+    <title>{{ title|default_if_none:"Welcome to Bugzilla" }}</title>
 
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -90,7 +90,7 @@
       <table border="0" cellspacing="0" cellpadding="0" id="titles">
         <tr>
           <td id="title">
-            <p>Bugzilla &ndash; Welcome to Bugzilla</p>
+            <p>Bugzilla &ndash; {{ title|default_if_none:"Welcome to Bugzilla" }}</p>
           </td>
           <td id="information">
             <p class="header_addl_info">version 4.4.1</p>
@@ -156,10 +156,11 @@
             <a id="login_link_top" href="{% url 'user:login' %}"
                onclick="return show_mini_login_form('_top')">Log In</a>
 
-            <form action="index.cgi" method="POST" 
+            <form action="{{ request.get_full_path }}" method="POST" 
                   class="mini_login bz_default_hidden"
                   id="mini_login_top"
                   onsubmit="return check_mini_login_fields( '_top' );">
+              {% csrf_token %}
               <input id="Bugzilla_login_top" 
                      class="bz_login"
                      name="Bugzilla_login"
@@ -366,11 +367,13 @@
           </ul>
         </li>
 
+        {% if user.is_authenticated %}
         <li id="links-saved">
           <ul class="links">
             <li><a href="{% url 'front:list-bug' %}?resolution=---&amp;emailassigned_to1=1&amp;emailreporter1=1&amp;emailtype1=exact&amp;email1={{ user.login_name }}">My Bugs</a></li>
           </ul>
         </li>
+        {% endif %}
 
       </ul>
 
