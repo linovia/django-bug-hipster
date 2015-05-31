@@ -40,7 +40,6 @@ create_account.html
 index
 -----
 - logout: index.cgi?logout=1
-- login: index.cgi?GoAheadAndLogIn=1
 - forgot password: index.cgi?GoAheadAndLogIn=1#forgot
 
 
