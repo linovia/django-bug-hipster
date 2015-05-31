@@ -11,24 +11,28 @@ from factory.django import DjangoModelFactory
 from factory import fuzzy
 
 from bughipster.user.factories import Profile
+from . import models
 
 
 class Product(DjangoModelFactory):
-    FACTORY_FOR = 'project.Product'
+    class Meta:
+        model = models.Product
 
     name = factory.Sequence(lambda n: 'product{0}'.format(n))
     description = fuzzy.FuzzyText(length=32)
 
 
 class Component(DjangoModelFactory):
-    FACTORY_FOR = 'project.Component'
+    class Meta:
+        model = models.Component
 
     name = factory.Sequence(lambda n: 'component{0}'.format(n))
     description = fuzzy.FuzzyText(length=32)
 
 
 class Bug(DjangoModelFactory):
-    FACTORY_FOR = 'project.Bug'
+    class Meta:
+        model = models.Bug
 
     title = factory.Sequence(lambda n: 'bug #{0}'.format(n))
     product = factory.SubFactory(Product)

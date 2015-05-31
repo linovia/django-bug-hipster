@@ -13,11 +13,10 @@ import sys
 
 
 install_requires = [
-    'Django<1.8',
+    'Django==1.8.2',
     'psycopg2',
-    # 'logan==0.5.9.1',
     'django-crispy-forms==1.4.0',
-    'django-filter==0.9.1',
+    'django-filter==0.10.0',
 ]
 
 

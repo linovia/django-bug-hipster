@@ -88,6 +88,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = Profile
+        fields = ('login_name', 'password', 'is_active', 'is_staff', 'is_superuser')
 
     def __init__(self, *args, **kwargs):
         super(UserChangeForm, self).__init__(*args, **kwargs)
