@@ -10,7 +10,8 @@ from django import http
 from django import forms
 
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import (
+    authenticate, get_user_model, login as auth_login)
 from django.utils.text import capfirst
 
 
@@ -93,13 +94,10 @@ class AuthenticationForm(forms.Form):
 class LoginMixin(object):
     def post(self, request, *args, **kwargs):
         if 'GoAheadAndLogIn' in request.POST:
-            login_form = AuthenticationForm(request.POST)
-            # TODO: Log in
+            login_form = AuthenticationForm(data=request.POST or None)
             if login_form.is_valid():
-                print('VALID')
+                auth_login(request, login_form.get_user())
                 return http.HttpResponseRedirect(request.get_full_path())
-
-            print('Form errors: %s' % login_form.errors)
 
             # We failed to login. Warn the user to go back ala Bugzilla style
             context = self.get_context_data(
