@@ -27,10 +27,6 @@ front_urls = [
     url(r'^show_bug\.cgi$', views.ToDo.as_view(), name='bug-details'),
 ]
 
-admin_urls = [
-    url(r'^admin\.cgi$', views.ToDo.as_view(), name='index'),
-]
-
 user_urls = [
     url(r'^createaccount\.cgi$', views.CreateAccount.as_view(), name='create-account'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
@@ -44,5 +40,4 @@ user_urls = [
 urlpatterns = [
     url(r'', include(front_urls, namespace='front')),
     url(r'', include(user_urls, namespace='user')),
-    url(r'', include(admin_urls, namespace='back')),
 ]

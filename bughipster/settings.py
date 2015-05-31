@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'bughipster.user',
     'bughipster.project',
     'bughipster.website',
+    'bughipster.bz_admin',
 
     # 3rd party applications
     'crispy_forms',
