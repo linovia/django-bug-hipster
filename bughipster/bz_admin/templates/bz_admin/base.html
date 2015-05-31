@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block css %}
+<link href="{% static 'skins/standard/global.css' %}" rel="alternate stylesheet" title="Classic">
+<link href="{% static 'skins/standard/global.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'skins/standard/index.css' %}" rel="stylesheet" type="text/css" >
+<link href="{% static 'skins/standard/admin.css' %}" rel="stylesheet" type="text/css">
+
+<!--[if lte IE 7]>
+<link href="{% static 'skins/standard/IE-fixes.css' %}" rel="stylesheet" type="text/css" >
+<![endif]-->
+
+<link href="{% static 'skins/contrib/Dusk/global.css' %}" rel="stylesheet" type="text/css" title="Dusk">
+<link href="{% static 'skins/contrib/Dusk/index.css' %}" rel="stylesheet" type="text/css" title="Dusk">
+{% endblock css %}
