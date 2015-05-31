@@ -14,13 +14,6 @@ def pytest_configure(config):
                     'TEST_NAME': ':memory:',
                 },
             },
-            # "INSTALLED_APPS": base_settings.INSTALLED_APPS,
-            # "ROOT_URLCONF": base_settings.ROOT_URLCONF,
-            # "DEBUG": False,
-            # "SITE_ID": 1,
-            # "TEMPLATE_DEBUG": False,
-            # "ALLOWED_HOSTS": ['*'],
-            # "STATIC_URL": '/static/',
         })
         settings.configure(**test_settings)
         django.setup()
