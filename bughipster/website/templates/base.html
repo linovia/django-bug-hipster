@@ -3,7 +3,7 @@
                       "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
-    <title>{{ title|default_if_none:"Welcome to Bugzilla" }}</title>
+    <title>{{ title|default:"Welcome to Bugzilla" }}</title>
 
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -90,7 +90,7 @@
       <table border="0" cellspacing="0" cellpadding="0" id="titles">
         <tr>
           <td id="title">
-            <p>Bugzilla &ndash; {{ title|default_if_none:"Welcome to Bugzilla" }}</p>
+            <p>Bugzilla &ndash; {{ title|default:"Welcome to Bugzilla" }}</p>
           </td>
           <td id="information">
             <p class="header_addl_info">version 4.4.1</p>
