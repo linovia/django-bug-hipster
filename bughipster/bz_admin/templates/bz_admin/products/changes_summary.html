@@ -1,0 +1,50 @@
+{% extends 'bz_admin/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block bugzilla-body %}
+{% if changes.name %}
+<p>
+    Updated product name from '{{ changes.name.old }}' to
+    '<a href="{% url 'back:products' %}?action=edit&amp;product={{ changes.name.new }}">{{ changes.name.new }}</a>'.</p>
+{% endif %}
+
+{% if changes.description %}
+<p>Updated description to:</p>
+<p style="margin: 1em 3em 1em 3em">{{ changes.description.new }}</p>
+{% endif %}
+
+{% if changes.is_active %}
+    {% if changes.is_active.new %}
+        <p>Product is now closed to new bugs.</p>
+    {% else %}
+        <p>Product is now open for new bugs.</p>
+    {% endif %}
+{% endif %}
+
+
+{% if changes.allows_unconfirmed %}
+    {% if changes.allows_unconfirmed.new %}
+        <p>
+            The product no longer allows the 
+            UNCONFIRMED status.
+            Note that any 
+            <a href="{% url 'front:buglist' %}?product={{ product.name }}&amp;bug_status=UNCONFIRMED"> bugs that currently have the 
+            UNCONFIRMED status</a>
+            will remain in that status until they are edited.
+        </p>
+    {% else %}
+        <p>The product now allows the UNCONFIRMED status.</p>
+    {% endif %}
+{% endif %}
+
+<hr>
+
+<p>
+  <a title="Add a product" href="{% url 'back:products' %}?action=add">Add</a> a product.
+  Edit product <a title="Edit Product '{{ product.name }}' " href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">
+        '{{ product.name }}'</a>.
+  Edit <a href="{% url 'back:products' %}">other products</a>.
+</p>
+
+{% endblock %}

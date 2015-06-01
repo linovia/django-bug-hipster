@@ -1,0 +1,44 @@
+{% extends 'bz_admin/base.html' %}
+{% load static from staticfiles %}
+
+
+{% block bugzilla-body %}
+<table id="admin_table" border="1" cellpadding="4" cellspacing="0">
+    <tbody>
+        <tr bgcolor="#6666FF">
+            <th align="left">Edit product...</th>
+            <th align="left">Description</th>
+            <th align="left">Open For New Bugs</th>
+            <th align="left">Action</th>
+        </tr>
+
+        {% for product in products %}
+        <tr>
+            <td>
+                <a href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">{{ product.name }}</a>
+            </td>
+            <td>
+                {{ product.description }}
+            </td>
+            <td>
+                {% if product.isactive %}Yes{% else %}No{% endif %}
+            </td>
+            <td>
+                <a href="{% url 'back:products' %}?action=del&amp;product={{ product.name }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>
+    <a href="{% url 'back:products' %}?showbugcounts=1">Redisplay table with bug counts (slower)</a>
+</p>
+
+<hr>
+
+<p>
+    <a title="Add a product" href="{% url 'back:products' %}?action=add">Add</a> a product.
+</p>
+
+{% endblock %}

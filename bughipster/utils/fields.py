@@ -13,6 +13,7 @@ class MultiFieldPK(Field):
         super(MultiFieldPK, self).__init__(*args, **kwargs)
         self.primary_key = True
         self.is_relation = False
+        self.concrete = False
 
     def contribute_to_class(self, cls, name):
         self.name = name
@@ -26,4 +27,3 @@ class MultiFieldPK(Field):
         model = self.model
         app = model._meta.app_label
         return '%s.%s.%s' % (app, model._meta.object_name, self.name)
-

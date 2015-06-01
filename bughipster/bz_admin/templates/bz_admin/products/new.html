@@ -1,0 +1,109 @@
+{% extends 'bz_admin/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block bugzilla-body %}
+<form method="post" action="{% url 'back:products' %}?action=add">
+  <table border="0" cellpadding="4" cellspacing="0">
+    {% csrf_token %}
+    <tbody>
+      <tr>
+        <th align="right">Product:</th>
+        <td>
+          <input size="64" maxlength="64" name="product" value="">
+        </td>
+      </tr>
+      <tr>
+        <th align="right">Description:</th>
+        <td><textarea rows="4" cols="64" wrap="virtual" name="description"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <th align="right">Open for bug entry:</th>
+        <td><input type="checkbox" name="is_active" value="1" checked="checked">
+        </td>
+      </tr>
+      <tr>
+        <th align="right">
+          <label for="allows_unconfirmed">Enable the UNCONFIRMED status in this product:</label>
+        </th>
+        <td><input type="checkbox" id="allows_unconfirmed" name="allows_unconfirmed" checked="checked">
+        </td>
+      </tr>
+      <tr>
+        <th align="right">Version:</th>
+        <td><input size="20" maxlength="64" name="version" value="unspecified">
+        </td>
+      </tr>
+      <tr>
+        <th align="right">Create chart datasets for this product:</th>
+        <td>
+          <input type="checkbox" name="createseries" value="1" checked="checked">
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          This product must have at least one component.
+          You will be able to create additional components later:
+        </td>
+      </tr>
+      <tr>
+        <th class="field_label"><label for="component">Component:</label></th>
+        <td><input size="64" maxlength="64" name="component" id="component" value=""></td>
+      </tr>
+      <tr>
+        <th class="field_label"><label for="comp_desc">Component Description:</label></th>
+        <td><textarea name="comp_desc" id="comp_desc" wrap="virtual" rows="4" cols="64"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <th class="field_label"><label for="initialowner">Default Assignee:</label></th>
+        <td><div id="initialowner_autocomplete" class="yui-ac">  
+        <input name="initialowner" value="" size="64" id="initialowner" class="yui-ac-input" autocomplete="off">
+          <div id="initialowner_autocomplete_container" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div>
+          </div>  
+          <script type="text/javascript">
+            if( typeof(YAHOO.bugzilla.userAutocomplete) !== 'undefined' 
+                && YAHOO.bugzilla.userAutocomplete != null){
+              YAHOO.bugzilla.userAutocomplete.init( "initialowner", 
+                          "initialowner_autocomplete_container");        
+            }
+          </script>
+        </td>
+      </tr>
+      <tr>
+        <th class="field_label"><label for="initialcc">Default CC List:</label></th>
+        <td><div id="initialcc_autocomplete" class="yui-ac">  
+        <input name="initialcc" value="" size="64" id="initialcc" class="yui-ac-input" autocomplete="off">
+          <div id="initialcc_autocomplete_container" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div>
+          </div>  
+          <script type="text/javascript">
+            if( typeof(YAHOO.bugzilla.userAutocomplete) !== 'undefined' 
+                && YAHOO.bugzilla.userAutocomplete != null){
+              YAHOO.bugzilla.userAutocomplete.init( "initialcc", 
+                          "initialcc_autocomplete_container", true);        
+            }
+          </script>
+          <br>
+            <em>Enter user names for the CC list as a comma-separated list.</em>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <input type="submit" id="add-product" value="Add">
+  <input type="hidden" name="action" value="new">
+  <input type="hidden" name="token" value="EPAitxNZKE">
+  <input type="hidden" name="classification" value="">
+</form>
+
+<hr>
+
+<p>
+  Edit <a href="{% url 'back:products' %}">other products</a>.
+</p>
+{% endblock %}

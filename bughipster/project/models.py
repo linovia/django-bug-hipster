@@ -107,7 +107,7 @@ class Product(models.Model):
 class Component(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, db_index=True)
-    product = models.ForeignKey('project.Product')
+    product = models.ForeignKey('project.Product', related_name='components')
     owner = models.ForeignKey(
         'user.Profile', db_index=False,
         db_column='initialowner', related_name='owned_components')
