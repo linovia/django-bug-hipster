@@ -22,7 +22,7 @@
 
       <tr>
         <th align="right">Open for bug entry:</th>
-        <td><input type="checkbox" name="is_active" value="{{ form.is_active.value }}" checked="checked">
+        <td><input type="checkbox" name="is_active" value="1"{% if form.is_active.value %} checked="checked"{% endif %}>
         </td>
       </tr>
 
@@ -30,7 +30,7 @@
         <th align="right">
           <label for="allows_unconfirmed">Enable the UNCONFIRMED status in this product:</label>
         </th>
-        <td><input type="checkbox" id="allows_unconfirmed" name="allows_unconfirmed" value="{{ form.allows_unconfirmed.value }}" checked="checked">
+        <td><input type="checkbox" id="allows_unconfirmed" name="allows_unconfirmed"{% if form.is_active.value %} checked="checked"{% endif %}>
         </td>
       </tr>
 
@@ -75,9 +75,9 @@
     </tbody>
   </table>
 
-  <input type="submit" id="add-product" value="Add">
-  <input type="hidden" name="action" value="new">
-  <input type="hidden" name="classification" value="">
+  <input type="hidden" name="product_old_name" value="{{ product.name }}">
+  <input type="hidden" name="action" value="update">
+  <input type="submit" id="update-product" value="Save Changes">
 </form>
 
 <hr>
