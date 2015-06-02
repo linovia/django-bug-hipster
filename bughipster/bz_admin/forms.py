@@ -17,8 +17,8 @@ from django import forms
 class EditProduct(forms.Form):
     product = forms.CharField(max_length=64)
     description = forms.CharField()
-    is_active = forms.NullBooleanField()
-    allows_unconfirmed = forms.NullBooleanField()
+    is_active = forms.BooleanField(required=False)
+    allows_unconfirmed = forms.BooleanField(required=False)
 
     def get_message_from_errors(self):
         """
