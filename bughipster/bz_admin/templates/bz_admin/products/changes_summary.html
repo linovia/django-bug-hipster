@@ -14,7 +14,7 @@
 <p style="margin: 1em 3em 1em 3em">{{ changes.description.new }}</p>
 {% endif %}
 
-{% if changes.is_active %}
+{% if changes.isactive %}
     {% if changes.is_active.new %}
         <p>Product is now closed to new bugs.</p>
     {% else %}
@@ -29,7 +29,7 @@
             The product no longer allows the 
             UNCONFIRMED status.
             Note that any 
-            <a href="{% url 'front:buglist' %}?product={{ product.name }}&amp;bug_status=UNCONFIRMED"> bugs that currently have the 
+            <a href="{% url 'front:list-bug' %}?product={{ product.name }}&amp;bug_status=UNCONFIRMED"> bugs that currently have the 
             UNCONFIRMED status</a>
             will remain in that status until they are edited.
         </p>
