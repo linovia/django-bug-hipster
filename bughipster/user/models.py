@@ -45,7 +45,7 @@ class Profile(models.Model):
     login_name = models.CharField(max_length=255, db_index=True, unique=True)
     password = models.CharField(max_length=128, null=True, db_column='cryptpassword')
     realname = models.CharField(max_length=255, default='')
-    disabledtext = models.TextField(default='')
+    disabledtext = models.TextField(default='', blank=True)
     disable_mail = models.SmallIntegerField(default=0, blank=True)
     mybugslink = models.SmallIntegerField(default=1, blank=True)
     extern_id = models.CharField(max_length=64, null=True, blank=True,
