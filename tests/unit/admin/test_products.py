@@ -55,3 +55,15 @@ def test_edit_product(rf):
     product = models.Product.objects.get(id=product.id)
     assert product.description == new_description
     assert not product.isactive
+
+
+def test_edit_product_with_empty_name(rf):
+    product = models.Product.objects.create(
+        name='someproduct',
+        description='Some product description.',
+    )
+    request = rf.post('editproducts.cgi?action=edit&product=someproduct', {'product': ''})
+    response = views.Products.as_view()(request)
+    assert response.status_code == 200
+    assert response.template_name == 'error.html'
+    assert response.context_data['message'] == "You must enter a name for the product."
