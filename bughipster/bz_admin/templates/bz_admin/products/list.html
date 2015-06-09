@@ -12,7 +12,7 @@
             <th align="left">Action</th>
         </tr>
 
-        {% for product in products %}
+        {% for product in product_list %}
         <tr>
             <td>
                 <a href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">{{ product.name }}</a>

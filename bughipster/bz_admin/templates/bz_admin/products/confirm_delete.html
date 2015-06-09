@@ -1,0 +1,105 @@
+{% extends 'bz_admin/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block bugzilla-body %}
+<table border="1" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr bgcolor="#6666FF">
+      <th valign="top" align="left">Field</th>
+      <th valign="top" align="left">Value</th>
+    </tr>
+
+    <tr>
+      <td valign="top">Product:</td>
+      <td valign="top">
+        <a href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">{{ product.name }}</a>
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top">Description:</td>
+      <td valign="top">{{ product.description }}</td>
+    </tr>
+
+    <tr>
+      <td>Closed for bugs:</td>
+      <td>
+          closed
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <a
+            href="{% url 'back:components' %}?product={{ product.name }}"
+            title="Edit components for product '{{ product.name }}'">
+            Components:
+        </a>
+      </td>
+      <td>
+        <table>
+          <tbody>
+            {% for component in product.components.all %}
+            <tr>
+              <th align="right">{{ component.name }}:</th>
+              <td>{{ component.description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  
+    <tr>
+      <td>
+          <a href="{% url 'back:versions' %}?product={{ product.name }}">
+            Versions:
+          </a>
+      </td>
+      <td>
+        {% for version in product.versions.all %}
+            {{ version.value }}<br>
+        {% endfor %}
+      </td>
+    </tr>
+
+    <tr>
+      <td>Bugs:</td>
+      <td>
+          none
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Confirmation</h2>
+
+  <p>Do you really want to delete this product?</p>
+
+  <form method="post" action="{% url 'back:products' %}?action=del?product={{ product.name }}">
+    <input type="checkbox" id="delete_series" name="delete_series" value="1">
+    <label for="delete_series">
+      Delete all related series (you can also delete them later, by visiting
+      the <a href="chart.cgi?category=aa">New Charts page</a>.)
+    </label><p>
+    <input type="submit" id="delete" value="Yes, delete">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="product" value="aa">
+    {% csrf_token %}
+  </p></form>
+
+<hr>
+
+<p>
+  <a title="Add a product" href="{% url 'back:products' %}?action=add">Add</a>
+  a product. Edit product
+  <a
+    title="Edit Product '{{ product.name }}' "
+    href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">
+    '{{ product.name }}'</a>.
+
+  Edit <a href="{% url 'back:products' %}?">other products</a>.
+
+</p>
+</div>{% endblock %}

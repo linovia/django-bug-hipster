@@ -148,7 +148,7 @@ class ComponentCC(models.Model):
 class Version(models.Model):
     id = models.AutoField(primary_key=True)
     value = models.CharField(max_length=64)
-    product = models.ForeignKey('project.Product')
+    product = models.ForeignKey('project.Product', related_name='versions')
     active = models.SmallIntegerField(default=1, db_column='isactive')
 
     class Meta:

@@ -6,212 +6,228 @@ bughipster.bz_admin.views
 :license: BSD, see LICENSE for more details.
 """
 
-from django import http
 from django.views import generic
-from django.views.generic.base import ContextMixin, View
-from django.core.urlresolvers import reverse
-from django.template.response import TemplateResponse
 from bughipster.project import models as project_models
 from bughipster.user import models as user_models
 from . import forms
+
+
+class ProductMixin(object):
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Slightly change the default `render_to_response` to handle an
+        optional template keyword argument.
+        """
+        response_kwargs.setdefault('content_type', self.content_type)
+        return self.response_class(
+            request=self.request,
+            template=response_kwargs.pop(
+                'template',
+                self.get_template_names()),
+            context=context,
+            using=self.template_engine,
+            **response_kwargs
+        )
 
 
 class Index(generic.TemplateView):
     template_name = 'bz_admin/index.html'
 
 
-class Products(ContextMixin, View):
-    template_engine = None
-    response_class = TemplateResponse
-    content_type = None
-    template_name = 'bz_admin/products.html'
+class ProductList(generic.ListView):
+    template_name = "bz_admin/products/list.html"
 
-    def render_to_response(self, context, **response_kwargs):
-        """
-        Returns a response, using the `response_class` for this
-        view, with a template rendered with the given context.
+    def get_queryset(self):
+        return project_models.Product.objects.all()
 
-        If any keyword arguments are provided, they will be
-        passed to the constructor of the response class.
-        """
-        response_kwargs.setdefault('content_type', self.content_type)
-        return self.response_class(
-            request=self.request,
-            context=context,
-            using=self.template_engine,
-            **response_kwargs
-        )
 
-    def bz_add(self, request, *args, **kwargs):
-        # TODO: add CC list and createseries
-        form = forms.NewProduct(data=request.POST or None)
-        context = self.get_context_data(form=form)
-        if form.is_valid():
-            data = form.cleaned_data
-            product = project_models.Product.objects.create(
-                name=data['product'],
-                description=data['description'],
-                isactive=data['is_active'] or False,
-                allows_unconfirmed=data['allows_unconfirmed'] or False,
-                )
-            # TODO: handle whenever a user doesn't exist.
-            # This shouldn't happen but we never know
-            owner = user_models.Profile.objects.get(
-                login_name=data['initialowner'])
-            project_models.Version.objects.create(
-                value=data['version'],
-                product=product)
-            project_models.Component.objects.create(
-                name=data['component'],
+class NewProduct(ProductMixin, generic.FormView):
+    form_class = forms.NewProduct
+    template_name = 'bz_admin/products/new.html'
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        product = project_models.Product.objects.create(
+            name=data['product'],
+            description=data['description'],
+            isactive=data['is_active'] or False,
+            allows_unconfirmed=data['allows_unconfirmed'] or False,
+            )
+        # TODO: handle whenever a user doesn't exist.
+        # This shouldn't happen but we never know
+
+        owner = user_models.Profile.objects.get(
+            login_name=data['initialowner'])
+        project_models.Version.objects.create(
+            value=data['version'],
+            product=product)
+        project_models.Component.objects.create(
+            name=data['component'],
+            product=product,
+            owner=owner,
+            description=data['comp_desc'])
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
                 product=product,
-                owner=owner,
-                description=data['comp_desc'])
-            return http.HttpResponseRedirect(
-                reverse('back:products') +
-                '?action=edit&product=%s' % product.name)
-        if form.is_bound:
-            message = form.get_message_from_errors() or repr(form.errors)
-            context.update(message=message)
-            return self.render_to_response(
-                context=context,
-                template='error.html',
-            )
-        return self.render_to_response(
-            context=context,
-            template='bz_admin/products/new.html',
-        )
-
-    def bz_edit(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        product_name = request.GET.get('product', None)
-        if product_name is None:
-            context.update(
-                message='You must select/enter a product.',
-            )
-            return self.render_to_response(
-                context=context,
-                template='error.html',
-            )
-        try:
-            product = project_models.Product.objects.get(name=product_name)
-        except project_models.Product.DoesNotExist:
-            context.update(
-                message="Either the product '%s' does not exist or you don't have access to it." % (product_name),
-            )
-            return self.render_to_response(
-                context=context,
-                template='error.html',
-            )
-
-        context.update(product=product)
-
-        form = forms.EditProduct(data=request.POST or None, initial={
-            'product': product.name,
-            'description': product.description,
-            'is_active': product.isactive,
-            'allows_unconfirmed': product.allows_unconfirmed,
-        })
-        context.update(form=form)
-        if form.is_valid():
-            data = form.cleaned_data
-            changes = {}
-
-            if product.name != data['product']:
-                changes['name'] = {
-                    'old': product.name,
-                    'new': data['product'],
-                }
-                product.name = data['product']
-
-            if product.description != data['description']:
-                changes['description'] = {
-                    'old': product.description,
-                    'new': data['description'],
-                }
-                product.description = data['description']
-
-            isactive = data['is_active'] or False
-            if product.isactive != isactive:
-                changes['isactive'] = {
-                    'old': product.isactive,
-                    'new': isactive,
-                }
-                product.isactive = isactive
-
-            allows_unconfirmed = data['allows_unconfirmed'] or False
-            if product.allows_unconfirmed != allows_unconfirmed:
-                changes['allows_unconfirmed'] = {
-                    'old': product.allows_unconfirmed,
-                    'new': allows_unconfirmed,
-                }
-                product.allows_unconfirmed = allows_unconfirmed
-
-            product.save()
-            context.update(changes=changes)
-
-            return self.render_to_response(
-                context=context,
-                template='bz_admin/products/changes_summary.html',
-            )
-
-        if form.is_bound:
-            message = form.get_message_from_errors() or repr(form.errors)
-            context.update(message=message)
-            return self.render_to_response(
-                context=context,
-                template='error.html',
-            )
-
-        return self.render_to_response(
-            context=context,
+            ),
             template='bz_admin/products/edit.html',
         )
 
-    def bz_del(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        return self.response_class(
-            request=self.request,
-            template=self.get_template_names(),
-            context=context,
-            using=self.template_engine,
-            content_type=self.content_type,
+    def form_invalid(self, form):
+        if form.is_bound:
+            print('Message: %s' % form.get_message_from_errors())
+            print(form.errors.keys())
+            message = form.get_message_from_errors() or repr(form.errors)
+            return self.render_to_response(
+                context=self.get_context_data(
+                    form=form,
+                    message=message,
+                ),
+                template='error.html',
+            )
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class EditProduct(ProductMixin, generic.FormView):
+    form_class = forms.EditProduct
+    template_name = 'bz_admin/products/edit.html'
+
+    def get_project(self, request):
+        product_name = request.GET.get('product', None)
+        if product_name is None:
+            raise LookupError('You must select/enter a product.')
+        try:
+            self.product = project_models.Product.objects.get(
+                name=product_name)
+        except project_models.Product.DoesNotExist:
+            raise ValueError(
+                "Either the product '%s' does not exist or "
+                "you don't have access to it." % (product_name),
+            )
+        # TODO: access check
+
+    def _change_attr(self, product, name, new_value):
+        old_value = getattr(product, name)
+        if old_value != new_value:
+            setattr(product, name, new_value)
+            return {
+                name: {
+                    'old': old_value,
+                    'new': new_value,
+                }
+            }
+        return {}
+
+    def form_valid(self, form, *args, **kwargs):
+        data = form.cleaned_data
+        product = self.product
+        changes = {}
+
+        changes.update(self._change_attr(
+            product, 'name',
+            data['product']))
+        changes.update(self._change_attr(
+            product, 'description',
+            data['description']))
+        changes.update(self._change_attr(
+            product, 'isactive',
+            data['is_active'] or False))
+        changes.update(self._change_attr(
+            product, 'allows_unconfirmed',
+            data['allows_unconfirmed'] or False))
+        product.save()
+
+        return self.render_to_response(
+            context=self.get_context_data(
+                form=form,
+                product=self.product,
+                changes=changes),
+            template='bz_admin/products/changes_summary.html',
         )
 
-    def bz_showbugcounts(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        return self.response_class(
-            request=self.request,
-            template=self.get_template_names(),
-            context=context,
-            using=self.template_engine,
-            content_type=self.content_type,
+    def form_invalid(self, form, *args, **kwargs):
+        message = form.get_message_from_errors() or repr(form.errors)
+        return self.render_to_response(
+            context=self.get_context_data(
+                form=form,
+                product=self.product,
+                message=message),
+            template='error.html',
         )
 
-    def bz_show(self, request, *args, **kwargs):
-        products = project_models.Product.objects.all()
-        context = self.get_context_data(products=products)
-        return self.response_class(
-            request=self.request,
-            template='bz_admin/products/list.html',
-            context=context,
-            using=self.template_engine,
-            content_type=self.content_type,
+    def get_initial(self):
+        return {
+            'product': self.product.name,
+            'description': self.product.description,
+            'is_active': self.product.isactive,
+            'allows_unconfirmed': self.product.allows_unconfirmed,
+        }
+
+    def get(self, request, *arg, **kwarg):
+        try:
+            self.get_project(request)
+        except (LookupError, ValueError) as e:
+            return self.render_to_response(
+                context=self.get_context_data(message=e.args[0]),
+                template='error.html',
+            )
+        form = self.get_form()
+
+        return self.render_to_response(self.get_context_data(
+            form=form, product=self.product))
+
+    def post(self, request, *args, **kwargs):
+        try:
+            self.get_project(request)
+        except (LookupError, ValueError) as e:
+            return self.render_to_response(
+                context=self.get_context_data(message=e.message),
+                template='error.html',
+            )
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+class DeleteProduct(ProductMixin, generic.FormView):
+    template_name = 'bz_admin/products/confirm_delete.html'
+
+    def get_product(self):
+        product_name = self.request.GET.get('product', None)
+        return project_models.Product.objects.get(name=product_name)
+
+    def handle_product_does_not_exist(self):
+        message = "You must select/enter a product."
+        if self.request.GET.get('product', None):
+            message = (
+                "Either the product '%s' does not exist or you don't have "
+                "access to it." % self.request.GET.get('product')
+            )
+        return self.render_to_response(
+            context={
+                'message': message,
+            },
+            template='error.html',
         )
 
     def get(self, request, *args, **kwargs):
-        action = request.GET.get('action', None)
-        handler = self.bz_show
-        if action == 'add':
-            handler = self.bz_add
-        elif action == 'edit':
-            handler = self.bz_edit
-        return handler(request, *args, **kwargs)
+        try:
+            product = self.get_product()
+        except project_models.Product.DoesNotExist:
+            return self.handle_product_does_not_exist()
+        return self.render_to_response(self.get_context_data(product=product))
 
-    def post(self, request, *args, **kwargs):
-        action = request.GET.get('action', None)
-        handler = self.bz_show
-        if action == 'add':
-            handler = self.bz_add
-        elif action == 'edit':
-            handler = self.bz_edit
-        return handler(request, *args, **kwargs)
+
+def products(request, *args, **kwargs):
+    action = request.GET.get('action', None)
+    handler = ProductList.as_view()
+    if action == 'add':
+        handler = NewProduct.as_view()
+    elif action == 'edit':
+        handler = EditProduct.as_view()
+    elif action == 'del':
+        handler = DeleteProduct.as_view()
+    return handler(request, *args, **kwargs)

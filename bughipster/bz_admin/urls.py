@@ -12,7 +12,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin\.cgi$', views.Index.as_view(), name='index'),
-    url(r'^editproducts\.cgi$', views.Products.as_view(), name='products'),
+    url(r'^editproducts\.cgi$', views.products, name='products'),
 
     url(r'^editparams\.cgi$', ToDo.as_view(), name='params'),
     url(r'^editsettings\.cgi$', ToDo.as_view(), name='settings'),
