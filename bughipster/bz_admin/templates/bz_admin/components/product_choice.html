@@ -1,0 +1,32 @@
+{% extends 'bz_admin/base.html' %}
+{% load static from staticfiles %}
+
+
+{% block bugzilla-body %}
+<table id="admin_table" border="1" cellpadding="4" cellspacing="0">
+    <tbody>
+        <tr bgcolor="#6666FF">
+            <th align="left">Edit components of...</th>
+            <th align="left">Description</th>
+        </tr>
+
+        {% for product in products %}
+        <tr>
+            <td>
+                <a href="{% url 'back:components' %}?product={{ product.name }}">{{ product.name }}</a>
+            </td>
+            <td>
+{{ product.description }}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<p>
+    <a href="{% url 'back:components' %}?showbugcounts=1">
+        Redisplay table with bug counts (slower)
+    </a>
+</p>
+{% endblock %}

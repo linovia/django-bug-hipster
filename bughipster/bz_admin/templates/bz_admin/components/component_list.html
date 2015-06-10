@@ -1,0 +1,57 @@
+{% extends 'bz_admin/base.html' %}
+{% load static from staticfiles %}
+
+
+{% block bugzilla-body %}
+<table id="admin_table" border="1" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr bgcolor="#6666FF">
+      <th align="left">Edit component...</th>
+      <th align="left">Description</th>
+      <th align="left">Default Assignee</th>
+      <th align="left">Default CC list</th>
+      <th align="left">Active</th>
+      <th align="left">Action</th>
+    </tr>
+
+    {% for component in components %}
+    <tr>
+      <td>
+        <a href="{% url 'back:components' %}?action=edit&amp;product={{ product.name }}&amp;component={{ component.name }}">{{ component.name }}</a>
+      </td>
+      <td>
+        {{ component.description}}
+      </td>
+      <td>
+        {{ component.owner.login_name}}
+      </td>
+      <td>
+      </td>
+      <td>
+        Yes
+      </td>
+      <td>
+          <a href="{% url 'back:components' %}?action=del&amp;product={{ product.name }}&amp;component={{ component.name }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>
+  <a href="{% url 'back:components' %}?action=add&amp;product={{ product.name }}">Add</a>
+  a new component to product '{{ product.name }}'
+</p>
+
+<p>
+  <a href="{% url 'back:components' %}?product={{ product.name }}&amp;showbugcounts=1">
+      Redisplay table with bug counts (slower)</a>
+</p>
+
+<hr>
+
+<p>
+  Edit product
+  <a title="Edit Product '{{ product.name }}'" href="{% url 'back:products' %}?action=edit&amp;product={{ product.name }}">'{{ product.name }}'</a>.
+</p>
+{% endblock %}

@@ -12,14 +12,15 @@ from . import views
 
 urlpatterns = [
     url(r'^admin\.cgi$', views.Index.as_view(), name='index'),
+
     url(r'^editproducts\.cgi$', views.products, name='products'),
+    url(r'^editcomponents\.cgi$', views.components, name='components'),
 
     url(r'^editparams\.cgi$', ToDo.as_view(), name='params'),
     url(r'^editsettings\.cgi$', ToDo.as_view(), name='settings'),
     url(r'^sanitycheck\.cgi$', ToDo.as_view(), name='sanitycheck'),
     url(r'^editusers\.cgi$', ToDo.as_view(), name='users'),
     url(r'^editclassifications\.cgi$', ToDo.as_view(), name='classifications'),
-    url(r'^editcomponents\.cgi$', ToDo.as_view(), name='components'),
     url(r'^editversions\.cgi$', ToDo.as_view(), name='versions'),
     url(r'^editmilestones\.cgi$', ToDo.as_view(), name='milestones'),
     url(r'^editflagtypes\.cgi$', ToDo.as_view(), name='flagtypes'),

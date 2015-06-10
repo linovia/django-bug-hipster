@@ -12,7 +12,7 @@ from bughipster.user import models as user_models
 from . import forms
 
 
-class ProductMixin(object):
+class BaseMixin(object):
     def render_to_response(self, context, **response_kwargs):
         """
         Slightly change the default `render_to_response` to handle an
@@ -41,7 +41,7 @@ class ProductList(generic.ListView):
         return project_models.Product.objects.all()
 
 
-class NewProduct(ProductMixin, generic.FormView):
+class NewProduct(BaseMixin, generic.FormView):
     form_class = forms.NewProduct
     template_name = 'bz_admin/products/new.html'
 
@@ -89,7 +89,7 @@ class NewProduct(ProductMixin, generic.FormView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class EditProduct(ProductMixin, generic.FormView):
+class EditProduct(BaseMixin, generic.FormView):
     form_class = forms.EditProduct
     template_name = 'bz_admin/products/edit.html'
 
@@ -192,7 +192,7 @@ class EditProduct(ProductMixin, generic.FormView):
             return self.form_invalid(form)
 
 
-class DeleteProduct(ProductMixin, generic.FormView):
+class DeleteProduct(BaseMixin, generic.FormView):
     template_name = 'bz_admin/products/confirm_delete.html'
 
     def get_product(self):
@@ -230,4 +230,54 @@ def products(request, *args, **kwargs):
         handler = EditProduct.as_view()
     elif action == 'del':
         handler = DeleteProduct.as_view()
+    return handler(request, *args, **kwargs)
+
+
+#
+# Components
+#
+
+class SelectProduct(BaseMixin, generic.ListView):
+    model = project_models.Product
+    context_object_name = 'products'
+    template_name = 'bz_admin/components/product_choice.html'
+
+
+class ComponentList(BaseMixin, generic.ListView):
+    template_name = 'bz_admin/components/component_list.html'
+    context_object_name = 'components'
+
+    def get_product(self):
+        if hasattr(self, '_product'):
+            return self._product
+        self._product = None
+        product_name = self.request.GET.get('product')
+        if product_name:
+            try:
+                self._product = project_models.Product.objects.get(
+                    name=product_name)
+            except project_models.Product.DoesNotExist:
+                pass
+        return self._product
+
+    def get_context_data(self, **kwargs):
+        print('GET_CONTEXT_DATA')
+        kwargs = super(ComponentList, self).get_context_data(**kwargs)
+        kwargs.update({'product': self.get_product()})
+        print(kwargs)
+        return kwargs
+
+    def get_queryset(self):
+        product_name = self.request.GET.get('product')
+        return project_models.Component.objects.filter(
+            product__name=product_name)
+
+
+def components(request, *args, **kwargs):
+    action = request.GET.get('action', None)
+    handler = SelectProduct.as_view()
+    if request.GET.get('product', None):
+        # TODO: access permissions to the provided project
+        # TODO: ensure the project name exists
+        handler = ComponentList.as_view()
     return handler(request, *args, **kwargs)
